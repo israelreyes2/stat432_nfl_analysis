@@ -1,0 +1,87 @@
+---
+title: "Who Dominates Taxi Business?"
+author:
+- Eric Jong Bum Kim (jekim3)
+- Israel Reyes (ir2)
+- Jihee Hwang (jhwang55)
+- Hyun Suk Lee ()
+date: "November 15, 2019"
+output:
+  html_document: default
+  pdf_document: default
+subtitle: STAT 432 FA2019 - Team LRHK
+abstract: Coming Soon
+---
+
+\newpage 
+
+# Introduction
+
+Uber and Lyft have became one of the most dominant taxi-service business around the major cities around the world, especially big cities in United States. However, when one visits big cities such as New York or Chicago, one realizes that there are plenty of traditional yellow cabs around the city. With this in mind, our group decided to study the traditional taxi market in the big city. With major taxi service companies still providing means of transportation, can we analyze the traditional taxi market from 2013 to present day. 
+
+In an attempt to construct a meaningful and effective way to detect the taxi service provider company in Chicago, various statistical learning techniques will be applied to Chicago Taxi Service data from 2013 to present. The main goal of our model is to see if a certain taxi service company can be mapped according to the financial and trip logistics of each fares in Chicago. If such is possible, this could provide an arguments about those that criticizes Uber and Lyft as two monopolistic companies in taxi service industries. Possibly decide if staying in the traditional taxi business is worth it or not. 
+
+# Background Information On Data 
+
+The dataset originates from the Chicago Digital Hub [^2] and was accessed through Kaggle [^1]. The safety and quality of taxi rides in Chicago are guaranteed through BACP [^3] (Department of Business Affairs and Consumer Protection) where they are authorized to collect information on taxi rides. This data is reported periodically through two major payment processors in which not all trips are reported but is believed to cover most of the taxi rides in Chicago. Based on this data reporting process, the dataset contains over 100 million taxi rides in Chicago from 2013. 
+
+Due to private concerns, following measures were implemented:
+
+- Each trip appears with delay in the data, long after the completion of the ride
+- The Taxi ID is consistent for a given taxi medallion number, but was created specifically for the dataset
+- Location is provided only at the Census Tract [^4] and Community Area levels [^5]
+
+Other corrections applied to the data include:
+
+- Trip times less than zero or greater than 86,400 seconds are removed.
+- Trip lengths less than zero or greater than 3,500 miles are removed.
+- If any component of the trip cost is less than $0 or greater than $10,000, all components of the trip cost are removed.
+
+# Data Description
+
+There are 23 columns of information about each trips. There are trip logistics information including trip starting and ending time stamps, trip duration and miles, pick up and drop off locations, latitude, and longitude, trip fare, tips, number of tolls, extra charges, total trip costs, and payment methods, and information about taxi and its company. More explanation of each columns can be found in the appendix of the file at the end of the project. 
+
+To further breakdown the data set, there are various categories that each variables can be classifeid into. 
+
+- taxi & company descriptions : _unique_key_, _tax_id_, _company_ are used to distinguish each unique taxi trips.
+
+- geographical locations : _pickup_latitude_, _pickup_longitude_, _pickup_location_, _dropoff_latitude_ , _dropoff_longitude_, _dropoff_location_, _pickup_community_, and _dropoff_community_ are used to decribe a phyiscal location of some aspect of the trip.
+
+- trip logistics : _trip_start_timestamp_, _trip_end_timestap_, _trip_seconds_, _trip_miles_, and _tolls_ are used to describe the trip logitics in terms of time and miles travled
+
+- finanical-related : _tripi_total_, _extras_, _tips_, and _payment_type_ are used to decribe the fare-related portion of the trips. 
+
+# Statistical Learning Task
+
+That being said, the statistical learning task to accomplish this goal will be with the means of classification models. Given certain features of the dataset like the geographical location, the length of the trip, cost and many others we will be classifying the company that corresponding trip applies to. It is immediately apparent that binary classification models are out of the question unless we would like to target a specific company to make it the positive class meanwhile the others are grouped into another classification. The problem with this however is that could potentially make the dataset uneven and although there are methods to combat this problem, we would have to model depending how many unique companies are in the dataset. Multiclass classification would have to be the main method for our goal with use of K-Nearest Neighbors and Random Forests along with cross validation, where we will be using 2 metrics to maximize being accuracy and sensitivity. 
+
+# Data Loading
+
+(Hyun Suk)
+```{r data loading}
+
+```
+
+
+# Data Modeling 
+
+(Hyun Suk)
+```{r initial_modeling}
+
+```
+
+
+
+
+
+
+
+[^1]: [Chicago Taxi Trips Data](https://www.kaggle.com/chicago/chicago-taxi-trips-bq)
+
+[^2]: [Digital Hub: Chicago Taxi Data Released](https://digital.cityofchicago.org/index.php/chicago-taxi-data-released/)
+
+[^3]: [City of Chicago: BACP](https://www.chicago.gov/city/en/depts/bacp/provdrs/vehic.html)
+
+[^4] : [Chicago Data Portal: Census Tracts](https://data.cityofchicago.org/Facilities-Geographic-Boundaries/Boundaries-Census-Tracts-2010/5jrd-6zik)
+
+[^5]: [Chicago Data Portal: Community Areas](https://data.cityofchicago.org/Facilities-Geographic-Boundaries/Boundaries-Community-Areas-current-/cauq-8yn6)
