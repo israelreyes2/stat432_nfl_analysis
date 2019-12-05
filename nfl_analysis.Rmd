@@ -1,5 +1,5 @@
 ---
-title: "Who Dominates Taxi Business?"
+title: "Can We Win?!"
 author:
 - Eric Jong Bum Kim (jekim3)
 - Israel Reyes (ir2)
@@ -17,10 +17,9 @@ abstract: Coming Soon
 
 # Introduction
 
-Uber and Lyft have became one of the most dominant taxi-service business around the major cities around the world, especially big cities in United States. However, when one visits big cities such as New York or Chicago, one realizes that there are plenty of traditional yellow cabs around the city. With this in mind, our group decided to study the traditional taxi market in the big city. With major taxi service companies still providing means of transportation, can we analyze the traditional taxi market from 2013 to present day. 
+NFL is one of the most-loved professional sport league in the United States. NFL is undoublety the top of the United States bringing in over $13 billion in Revenue every year. With that in mind, think about how much pressure each and every NFL players have on their shoulders during the game. They don't want to dissapoint their supporting fans, and coaches! Some say that American football is a chess game. Head coaches are the players of the chess game, and each NFL players are pieces which head coaches move to win the game. With that in mind, every head coaches' goal of each and every play they call, regardless on offense, defense, or speical team, they are looking to gain any sort of edge over their opponent. American football is quite differnt from other sports since after each play, game stops. After each play, coaches tell their players to run a play which will allow them to score. Head coaches call plays based on combination of experiences, time on clock, field positions, their team's best players, and more. What if, like other sports, analytics can call plays? 
 
-In an attempt to construct a meaningful and effective way to detect the taxi service provider company in Chicago, various statistical learning techniques will be applied to Chicago Taxi Service data from 2013 to present. The main goal of our model is to see if a certain taxi service company can be mapped according to the financial and trip logistics of each fares in Chicago. If such is possible, this could provide an arguments about those that criticizes Uber and Lyft as two monopolistic companies in taxi service industries. Possibly decide if staying in the traditional taxi business is worth it or not. 
-
+In an attempt to construct a meaningful and effective way for head coaches to decide to call which play purely relying on analytics, various statistical learning technqiues will be applied to the NFL play-by-play data. The main goal of our model is to see if analytical variables at the moment of the game can increase the chance of team winning the most. In NFL, there is a measure called, winning percentage. Winning percentage measures probabiity of a team winning at the given moment of the game, and since football game stop after each play, winning percentage changes after each play. Can we possibly decide which play will increase team's chance of winning according to football analytics? 
 # Background Information On Data 
 
 The dataset originates from the Chicago Digital Hub [^2] and was accessed through Kaggle [^1]. The safety and quality of taxi rides in Chicago are guaranteed through BACP [^3] (Department of Business Affairs and Consumer Protection) where they are authorized to collect information on taxi rides. This data is reported periodically through two major payment processors in which not all trips are reported but is believed to cover most of the taxi rides in Chicago. Based on this data reporting process, the dataset contains over 100 million taxi rides in Chicago from 2013. 
@@ -57,15 +56,19 @@ That being said, the statistical learning task to accomplish this goal will be w
 
 # Data Loading
 
-(Hyun Suk)
-```{r data loading}
-
+```{r data loading, warning = FALSE}
+df_2018_first = read_csv("/cloud/project/NFL_2018_first.csv")
+df_2018_second = read_csv("/cloud/project/NFL_2018_second.csv")
 ```
+
+```{r full 2018}
+df_2018 = rbind(df_2018_first, df_2018_second)
+```
+
 
 
 # Data Modeling 
 
-(Hyun Suk)
 ```{r initial_modeling}
 
 ```
