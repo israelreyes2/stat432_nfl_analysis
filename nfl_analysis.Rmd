@@ -38,6 +38,8 @@ Other corrections applied to the data include:
 
 # Data Description
 
+The NFL data for each season contains 257 different variables to describe everything 
+
 There are 23 columns of information about each trips. There are trip logistics information including trip starting and ending time stamps, trip duration and miles, pick up and drop off locations, latitude, and longitude, trip fare, tips, number of tolls, extra charges, total trip costs, and payment methods, and information about taxi and its company. More explanation of each columns can be found in the appendix of the file at the end of the project. 
 
 To further breakdown the data set, there are various categories that each variables can be classifeid into. 
