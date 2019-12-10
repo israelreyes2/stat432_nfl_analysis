@@ -39,7 +39,14 @@ Other corrections applied to the data include:
 
 # Data Description
 
-The NFL data for each season contains 257 different variables in attempt to explain every play of the game in every game of the season. For the purpose of our project following will be done.
+The NFL data for each season contains 257 different variables in attempt to explain every play of the game in every game of the season. Each and every play of the game is broken down into great detail containing information on game situation, players involed, resutls, and advanced football analytical metrics. Here are few variables correlating to these.
+
+ - Game situation : _Posteam_, _Defteam_,  _Game_date_
+ - Players Invovled : _passer_player_name_, _receiver_player_name_, _rusher_player_name_, _punter_player_name_, _kicker_player_name_
+ - results : _yrd_gained_
+ - advanced analytics : _wpa_
+
+# Data Cleaning
 
 1. Our project will only consider 2018 NFL season. The Atlatna Falcons and philadelphia Eagles played season openr on 09/06/2018, and final games of the season were played on 12/30/2018. We decided to focus on single 2018 season because of size of the data, and trend of the NFL games are rapidly changing now days, that playing styles from two seasons ago are considered "outdated". 
 
@@ -57,7 +64,7 @@ That being said, the statistical learning task to accomplish this goal will be w
 
 # Data Loading
 
-```{r package loading}
+```{r package loading, warning = FALSE}
 library(dplyr)
 library(tidyverse)
 ```
@@ -72,19 +79,15 @@ df_2018 = rbind(df_2018_first, df_2018_second)
 head(df_2018)
 ```
 
-```{r}
-unique(df_2018$game_date)
-```
-
-
 ```{r cleaning up columns - temp}
-keep = c("posteam", "defteam", "yardline_100", "game_date", "game_seconds_remaining", "qtr", "down", "ydstogo",
-         "play_type", "yards_gained", 
-         "pass_length", "air_yards", "yards_after_catch",
-         "run_location", 
-         "posteam_timeouts_remaining", "defteam_timeouts_remaining",
-         "wpa", 
-         "passer_player_name", "receiver_player_name", "rusher_player_name", "punter_player_name", "kicker_player_name"
+keep = c("posteam", "defteam", "yardline_100", "game_date", "game_seconds_remaining", "qtr", "down", "ydstogo", #game administravtive variables
+         "play_type","shotgun", "no_huddle", "qb_dropback", "pass_location", #offensive game types
+         "yards_gained", "pass_length", "air_yards", "yards_after_catch", #offensive pass play results
+         "run_location", "run_gap", #offensive run plays
+         "field_goal_result", "kick_distance", #speical teams
+         "posteam_timeouts_remaining", "defteam_timeouts_remaining", #time out remainings
+         "wpa", #responce variables
+         "passer_player_name", "receiver_player_name", "rusher_player_name", "punter_player_name", "kicker_player_name" #Offensive focal point player's name
          )
 
 #These are variables that I might thought it would be useful for us to limit down to, feel free to add any as needed
