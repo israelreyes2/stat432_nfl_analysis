@@ -58,13 +58,44 @@ That being said, the statistical learning task to accomplish this goal will be w
 
 # Data Loading
 
+```{r package loading}
+library(dplyr)
+library(tidyverse)
+```
+
 ```{r data loading, warning = FALSE}
 df_2018_first = read_csv("/cloud/project/NFL_2018_first.csv")
 df_2018_second = read_csv("/cloud/project/NFL_2018_second.csv")
+df_2018 = rbind(df_2018_first, df_2018_second)
 ```
 
-```{r full 2018}
-df_2018 = rbind(df_2018_first, df_2018_second)
+```{r}
+head(df_2018)
+```
+
+```{r cleaning up columns - temp}
+keep = c("posteam", "defteam", "yardline_100", "game_date", "game_seconds_remaining", "qtr", "down", "ydstogo",
+         "play_type", "yards_gained", 
+         "pass_length", "air_yards", "yards_after_catch",
+         "run_location", 
+         "posteam_timeouts_remaining", "defteam_timeouts_remaining",
+         "wpa", 
+         "passer_player_name", "receiver_player_name", "rusher_player_name", "punter_player_name", "kicker_player_name"
+         )
+
+#These are variables that I might thought it would be useful for us to limit down to, feel free to add any as needed
+
+df_2018_reduced = subset(df_2018, select = keep)
+```
+
+```{r}
+unique(df_2018$play_type)
+```
+
+```{r remving invalid playtypes}
+#game_warnings = sum(is.na(df_2018$play_type)) #all of the NA playtypes are either end of quaters or two-min warnings. (1429 of them)
+
+df_2018_reduced = df_2018_reduced[complete.cases(df_2018_reduced[ , "play_type"]),]
 ```
 
 
@@ -72,7 +103,8 @@ df_2018 = rbind(df_2018_first, df_2018_second)
 # Data Modeling 
 
 ```{r initial_modeling}
-
+lm_mod = lm(wpa ~  quarter_seconds_remaining + yards_gained + yards_after_catch, data = df_2018)
+summary(lm_mod)
 ```
 
 
