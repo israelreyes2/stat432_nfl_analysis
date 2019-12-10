@@ -20,6 +20,7 @@ abstract: Coming Soon
 NFL is one of the most-loved professional sport league in the United States. NFL is undoublety the top of the United States bringing in over $13 billion in Revenue every year. With that in mind, think about how much pressure each and every NFL players have on their shoulders during the game. They don't want to dissapoint their supporting fans, and coaches! Some say that American football is a chess game. Head coaches are the players of the chess game, and each NFL players are pieces which head coaches move to win the game. With that in mind, every head coaches' goal of each and every play they call, regardless on offense, defense, or speical team, they are looking to gain any sort of edge over their opponent. American football is quite differnt from other sports since after each play, game stops. After each play, coaches tell their players to run a play which will allow them to score. Head coaches call plays based on combination of experiences, time on clock, field positions, their team's best players, and more. What if, like other sports, analytics can call plays? 
 
 In an attempt to construct a meaningful and effective way for head coaches to decide to call which play purely relying on analytics, various statistical learning technqiues will be applied to the NFL play-by-play data. The main goal of our model is to see if analytical variables at the moment of the game can increase the chance of team winning the most. In NFL, there is a measure called, winning percentage. Winning percentage measures probabiity of a team winning at the given moment of the game, and since football game stop after each play, winning percentage changes after each play. Can we possibly decide which play will increase team's chance of winning according to football analytics? 
+
 # Background Information On Data 
 
 The dataset originates from the Chicago Digital Hub [^2] and was accessed through Kaggle [^1]. The safety and quality of taxi rides in Chicago are guaranteed through BACP [^3] (Department of Business Affairs and Consumer Protection) where they are authorized to collect information on taxi rides. This data is reported periodically through two major payment processors in which not all trips are reported but is believed to cover most of the taxi rides in Chicago. Based on this data reporting process, the dataset contains over 100 million taxi rides in Chicago from 2013. 
@@ -38,19 +39,17 @@ Other corrections applied to the data include:
 
 # Data Description
 
-The NFL data for each season contains 257 different variables to describe everything 
+The NFL data for each season contains 257 different variables in attempt to explain every play of the game in every game of the season. For the purpose of our project following will be done.
 
-There are 23 columns of information about each trips. There are trip logistics information including trip starting and ending time stamps, trip duration and miles, pick up and drop off locations, latitude, and longitude, trip fare, tips, number of tolls, extra charges, total trip costs, and payment methods, and information about taxi and its company. More explanation of each columns can be found in the appendix of the file at the end of the project. 
+1. Our project will only consider 2018 NFL season. The Atlatna Falcons and philadelphia Eagles played season openr on 09/06/2018, and final games of the season were played on 12/30/2018. We decided to focus on single 2018 season because of size of the data, and trend of the NFL games are rapidly changing now days, that playing styles from two seasons ago are considered "outdated". 
 
-To further breakdown the data set, there are various categories that each variables can be classifeid into. 
+2. With 257 variables, we had to narrow down our variables. There are many variables there are quite meaningless. Based on our prior knowledge of the game, we will narrow down to variables that we believe might be a variables that caoches can input during the game. These include variables such as field position, game clock, and team's quaterback. These variables are subject to change as the study goes further. 
 
-- taxi & company descriptions : _unique_key_, _tax_id_, _company_ are used to distinguish each unique taxi trips.
+3. In NFL there are 10 types of play a team can excute throughout the game. However, for our purpose of the study, we will remove following play types for following reasons: 
 
-- geographical locations : _pickup_latitude_, _pickup_longitude_, _pickup_location_, _dropoff_latitude_ , _dropoff_longitude_, _dropoff_location_, _pickup_community_, and _dropoff_community_ are used to decribe a phyiscal location of some aspect of the trip.
-
-- trip logistics : _trip_start_timestamp_, _trip_end_timestap_, _trip_seconds_, _trip_miles_, and _tolls_ are used to describe the trip logitics in terms of time and miles travled
-
-- finanical-related : _tripi_total_, _extras_, _tips_, and _payment_type_ are used to decribe the fare-related portion of the trips. 
+ - NA : these are game administrative play types such as end of the quarters, end of the regularation, and 2 minute warnings
+ - qb_kneel : most of the time, QB will only kneel when the game result has already been decided and to run down the clock to the end of the game, so we will ignore these 
+ - no_play : no_play represnts plays which penatly has occured. Further study will be needed in order to accruatly decide what we are going do with these plays. 
 
 # Statistical Learning Task
 
@@ -73,6 +72,11 @@ df_2018 = rbind(df_2018_first, df_2018_second)
 head(df_2018)
 ```
 
+```{r}
+unique(df_2018$game_date)
+```
+
+
 ```{r cleaning up columns - temp}
 keep = c("posteam", "defteam", "yardline_100", "game_date", "game_seconds_remaining", "qtr", "down", "ydstogo",
          "play_type", "yards_gained", 
@@ -92,13 +96,17 @@ df_2018_reduced = subset(df_2018, select = keep)
 unique(df_2018$play_type)
 ```
 
-```{r remving invalid playtypes}
+```{r, checking no_plays in play type}
+#no_play = subset(df_2018, df_2018$play_type == "no_play")
+#head(no_play)
+```
+
+
+```{r, removing adminstrative playtypes}
 #game_warnings = sum(is.na(df_2018$play_type)) #all of the NA playtypes are either end of quaters or two-min warnings. (1429 of them)
 
 df_2018_reduced = df_2018_reduced[complete.cases(df_2018_reduced[ , "play_type"]),]
 ```
-
-
 
 # Data Modeling 
 
