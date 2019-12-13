@@ -17,11 +17,11 @@ abstract: Coming Soon
 
 # Introduction
 
-NFL is one of the most-loved professional sport league in the United States. NFL is undoublety the top of the United States bringing in over $13 billion in Revenue every year. With that in mind, think about how much pressure each and every NFL players have on their shoulders during the game. They don't want to dissapoint their supporting fans, and coaches! Some say that American football is a chess game. Head coaches are the players of the chess game, and each NFL players are pieces which head coaches move to win the game. With that in mind, every head coaches' goal of each and every play they call, regardless on offense, defense, or speical team, they are looking to gain any sort of edge over their opponent. American football is quite differnt from other sports since after each play, game stops. After each play, coaches tell their players to run a play which will allow them to score. Head coaches call plays based on combination of experiences, time on clock, field positions, their team's best players, and more. What if, like other sports, analytics can call plays? 
+NFL is one of the most-loved professional sport league in the United States. NFL is undoublty the top sport league in the United States bringing in over $13 billion in revenue each year. With that, each and every player on a team is under tremdouble pressure to performe under the spot light. Let's look at the other important piece of NFL games, the coaches. Some say that football is a chess game, which head coaches are the players of the game, and NFL players are peices which head coaches move to win the game. With that, every head coach's goals to call plays which will give them any sort of edge over their oppoenent. American football is quite differnt from other sports since after each play, game stops. After each play, coaches tell their players to run a play which will allow them to score. Head coaches call plays based on combination of experiences, time on clock, field positions, their team's best players, and more. What if, like other sports, analytics can call plays? 
 
 In an attempt to construct a meaningful and effective way for head coaches to decide to call which play purely relying on analytics, various statistical learning technqiues will be applied to the NFL play-by-play data. The main goal of our model is to see if analytical variables at the moment of the game can increase the chance of team winning the most. In NFL, there is a measure called, winning percentage. Winning percentage measures probabiity of a team winning at the given moment of the game, and since football game stop after each play, winning percentage changes after each play. Can we possibly decide which play will increase team's chance of winning according to football analytics? 
 
-# Background Information On Data 
+# Background Information On Data (Jinhee)
 
 The dataset originates from the Chicago Digital Hub [^2] and was accessed through Kaggle [^1]. The safety and quality of taxi rides in Chicago are guaranteed through BACP [^3] (Department of Business Affairs and Consumer Protection) where they are authorized to collect information on taxi rides. This data is reported periodically through two major payment processors in which not all trips are reported but is believed to cover most of the taxi rides in Chicago. Based on this data reporting process, the dataset contains over 100 million taxi rides in Chicago from 2013. 
 
@@ -123,19 +123,11 @@ df_2018_reduced_no_kick_off = df_2018_reduced_no_qb_kneels %>%
 df_2018_cleaned = df_2018_reduced_no_kick_off[complete.cases(df_2018_reduced_no_kick_off[ , "wpa"]),]
 ```
 
-```{r variable type trasformation}
-df_2018_cleaned$posteam = as.factor(df_2018_cleaned$posteam)
-df_2018_cleaned$defteam = as.factor(df_2018_cleaned$defteam)
+```{r variable factor type conversion}
+factor_list = c("posteam", "defteam", "play_type" ,"passer_player_name","receiver_player_name", "rusher_player_name", "punter_player_name", "kicker_player_name")
 
-df_2018_cleaned$play_type = as.factor(df_2018_cleaned$play_type)
-
-df_2018_cleaned$passer_player_name = as.factor(df_2018_cleaned$passer_player_name)
-df_2018_cleaned$receiver_player_name = as.factor(df_2018_cleaned$receiver_player_name)
-df_2018_cleaned$rusher_player_name = as.factor(df_2018_cleaned$rusher_player_name)
-df_2018_cleaned$punter_player_name = as.factor(df_2018_cleaned$punter_player_name)
-df_2018_cleaned$kicker_player_name = as.factor(df_2018_cleaned$kicker_player_name)
+df_2018_cleaned[factor_list] <- lapply(df_2018_cleaned[factor_list], factor)
 ```
-
 
 # Data Modeling 
 
