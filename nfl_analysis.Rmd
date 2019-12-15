@@ -81,9 +81,7 @@ keep = c("posteam", "defteam", "yardline_100", "game_date", "game_seconds_remain
          "run_location", "run_gap", #offensive run plays
          "field_goal_result", "kick_distance", #speical teams
          "posteam_timeouts_remaining", "defteam_timeouts_remaining", #time out remainings
-         "wpa", #responce variables
-         "passer_player_name", "receiver_player_name", "rusher_player_name", "punter_player_name", "kicker_player_name" #Offensive focal point player's name
-         )
+         "wpa") #responce variables
 
 #These are variables that I might thought it would be useful for us to limit down to, feel free to add any as needed
 
@@ -116,31 +114,13 @@ df_2018_cleaned = df_2018_reduced_no_kick_off[complete.cases(df_2018_reduced_no_
 ```
 
 ```{r variable factor type conversion}
-factor_list = c("posteam", "defteam", "play_type" ,"passer_player_name","receiver_player_name", "rusher_player_name", "punter_player_name", "kicker_player_name")
+factor_list = c("posteam", "defteam", "play_type")
 
 df_2018_cleaned[factor_list] <- lapply(df_2018_cleaned[factor_list], factor)
 ```
 
-```{r replacing NAs with 0 for pass plays}
-df_2018_cleaned$air_yards[is.na(df_2018_cleaned$air_yards)] = 0
-df_2018_cleaned$yards_after_catch[is.na(df_2018_cleaned$yards_after_catch)] = 0
-```
-
 ```{r}
 head(df_2018_cleaned)
-```
-
-```{r}
-unique(df_2018_cleaned$pass_length)
-unique(df_2018_cleaned$pass_location)
-unique(df_2018_cleaned$run_gap)
-unique(df_2018_cleaned$field_goal_result)
-unique(df_2018_cleaned$kick_distance)
-unique(df_2018_cleaned$passer_player_name)
-unique(df_2018_cleaned$receiver_player_name)
-unique(df_2018_cleaned$rusher_player_name)
-unique(df_2018_cleaned$punter_player_name)
-unique(df_2018_cleaned$kicker_player_name)
 ```
 
 # Data Modeling 
@@ -149,6 +129,7 @@ unique(df_2018_cleaned$kicker_player_name)
 lm_mod = lm(wpa ~  game_seconds_remaining + yards_gained + yards_after_catch, data = df_2018_cleaned)
 summary(lm_mod)
 ```
+
 
 [^1]: [Kaggle: Detailed NFL Play-by-Play Data 2009-2018](https://www.kaggle.com/maxhorowitz/nflplaybyplay2009to2016)
 
