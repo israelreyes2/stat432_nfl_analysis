@@ -63,6 +63,8 @@ That being said, the statistical learning task to accomplish this goal will be w
 library(dplyr)
 library(tidyverse)
 library(caret)
+library(rsample)
+library(glmnet)
 ```
 
 ```{r data loading, warning = FALSE}
@@ -75,7 +77,7 @@ df_2018 = rbind(df_2018_first, df_2018_second)
 
 ## Data Cleaning
 
-```{r cleaning up columns - temp}
+```{r variable clean up, offense only}
 keep = c("posteam", "defteam", "yardline_100", "game_date", "game_seconds_remaining", "qtr", "down", "ydstogo", #game administravtive variables
          "play_type","shotgun", "no_huddle", "qb_dropback", "pass_location", #offensive game types
          "yards_gained", "pass_length", "air_yards", "yards_after_catch", #offensive pass play results
@@ -114,41 +116,30 @@ df_2018_reduced_no_kick_off = df_2018_reduced_no_qb_kneels %>%
 df_2018_cleaned = df_2018_reduced_no_kick_off[complete.cases(df_2018_reduced_no_kick_off[ , "wpa"]),]
 ```
 
+```{r replacing na with 0 for numeric variables}
+df_2018_cleaned$air_yards[is.na(df_2018_cleaned$air_yards)] = 0
+df_2018_cleaned$yards_after_catch[is.na(df_2018_cleaned$yards_after_catch)] = 0
+df_2018_cleaned$kick_distance[is.na(df_2018_cleaned$kick_distance)] = 0
+```
+
 ```{r variable factor type conversion}
-factor_list = c("posteam", "defteam", "play_type")
+factor_list = c("posteam", "defteam", "play_type", "pass_location", "pass_length", "run_location", "run_gap", "field_goal_result")
 
 df_2018_cleaned[factor_list] <- lapply(df_2018_cleaned[factor_list], factor)
 ```
 
-# Data Modeling 
-
-```{r initial_modeling}
-lm_mod = lm(wpa ~  game_seconds_remaining + yards_gained + yards_after_catch, data = df_2018_cleaned)
-summary(lm_mod)
-```
-
-```{r, ridge modeling}
-ridge_data_x = df_2018_cleaned %>% select(-wpa)
-ridge_data_y = df_2018_cleaned %>% pull(wpa)
-
-ridge_mod  = glance.cv.glmnet(x = x_ridge, y = y_ridge, alpha = 0)
-
-plot(ridged_mod, xvar = "lambda", label = TRUE)
-grid()
-```
-
-
 # Training Testing Data Split
-```{r}
-library(rsample)
+```{r data split}
 set.seed(1)
 
 # test-train split
 nfl_tst_trn_split = initial_split(df_2018_cleaned, prop = 0.80)
 nfl_trn = training(nfl_tst_trn_split)
 nfl_tst = testing(nfl_tst_trn_split)
-
 ```
+
+# Data Modeling 
+
 
 
 [^1]: [Kaggle: Detailed NFL Play-by-Play Data 2009-2018](https://www.kaggle.com/maxhorowitz/nflplaybyplay2009to2016)
