@@ -1,11 +1,11 @@
 ---
-title: "Can We Win?!"
+title: "Down By 4, 2nd And Goal, 26 Seconds To Go, What Play Are YOU Calling?"
 author:
 - Eric Jong Bum Kim (jekim3)
 - Israel Reyes (ir2)
 - Jihee Hwang (jhwang55)
 - Hyun Suk Lee ()
-date: "November 15, 2019"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   html_document: default
   pdf_document: default
@@ -17,67 +17,62 @@ abstract: Coming Soon
 
 # Introduction
 
-NFL is one of the most-loved professional sport league in the United States. NFL is undoublety the top of the United States bringing in over $13 billion in Revenue every year. With that in mind, think about how much pressure each and every NFL players have on their shoulders during the game. They don't want to dissapoint their supporting fans, and coaches! Some say that American football is a chess game. Head coaches are the players of the chess game, and each NFL players are pieces which head coaches move to win the game. With that in mind, every head coaches' goal of each and every play they call, regardless on offense, defense, or speical team, they are looking to gain any sort of edge over their opponent. American football is quite differnt from other sports since after each play, game stops. After each play, coaches tell their players to run a play which will allow them to score. Head coaches call plays based on combination of experiences, time on clock, field positions, their team's best players, and more. What if, like other sports, analytics can call plays? 
+NFL is one of the most-loved professional sport league in the United States. NFL is undoubtedly the top sport league in the United States bringing in over $13 billion in revenue each year. With that, each and every player on a team is under tremendous pressure to perform under the spot light. Let's look at the other important piece of NFL games, the coaches. Some say that football is a chess game, which head coaches are the players of the game, and NFL players are pieces which head coaches move to win the game. With that, every head coach's goals to call plays which will give them any sort of edge over their opponent. American football is quite different from other sports since after each play, game stops. After each play, coaches tell their players to run a play which will allow them to score. Head coaches call plays based on combination of experiences, time on clock, field positions, their team's best players, and more. What if, like other sports, analytic can call plays? 
 
-In an attempt to construct a meaningful and effective way for head coaches to decide to call which play purely relying on analytics, various statistical learning technqiues will be applied to the NFL play-by-play data. The main goal of our model is to see if analytical variables at the moment of the game can increase the chance of team winning the most. In NFL, there is a measure called, winning percentage. Winning percentage measures probabiity of a team winning at the given moment of the game, and since football game stop after each play, winning percentage changes after each play. Can we possibly decide which play will increase team's chance of winning according to football analytics? 
+In Super Bowl XLIX (Seattle Seahawks vs. New England Patriots), at the last second of the game, one of the most questionable play call was made by Seattle Seahawks and their head coach, Pete Caroll. Down by 4 and on 2nd and goal with 26 seconds to go, Pete Caroll decided to throw the ball instead of running the ball. In context of the game, Seattle Seahawks had one of the most dominant running back in the game, Marshawn  Lynch, but they decided to throw the ball resulting in interception. Many questioned, why would Seahawks pass the ball at that point of the game? This play still hurts Seahawks fans till now today. With that, did Pete Caroll and Seattle Seahawks believe that passing play would have resulted in increasing the probability of the winning game more than running game? With this case as a motivation, we will conduct our study. 
 
-# Background Information On Data 
+In an attempt to construct meaningful and effective ways for coaches to call what type of play purely rely on analytic probability, various statistical learning techniques will be applied to the NFL play-by-play data. The main goal of our study is to see if football-game related measures such as game clock situation, position on the field, and players on the field at the moment can increase the chance of winning the most for the team. In NFL, there is a measure called, winning percentage. Winning percentage measures probability of a team winning at the given moment of the game, and since football game stop after each play, winning percentage changes after each play. Can we possibly decide which play will increase team's chance of winning according to game-related status? Our model will focus only on the offensive side of the ball. Ultimately, we will utilize statistical learning techniques for offensive coordinator to call plays based on analytic. 
 
-The dataset originates from the Chicago Digital Hub [^2] and was accessed through Kaggle [^1]. The safety and quality of taxi rides in Chicago are guaranteed through BACP [^3] (Department of Business Affairs and Consumer Protection) where they are authorized to collect information on taxi rides. This data is reported periodically through two major payment processors in which not all trips are reported but is believed to cover most of the taxi rides in Chicago. Based on this data reporting process, the dataset contains over 100 million taxi rides in Chicago from 2013. 
+# Background Information On Data
 
-Due to private concerns, following measures were implemented:
+The dataset was retrieved from Kaggle [^1] and originated from github [^2]. In order to provide clean, play-by-play data via open-source software package in football, a group of Carnegie Mellon University statistical researchers [^3] Maksim Horowitz, Ron Yurko, and Sam Ventura built an nflscrapR [^4] package in R which outputs datasets for individual play, player, game, and season levels accessed from the NFL [^5]. There are three versions of the data sources in Kaggle, and we will be using the most recent version (v5) for NFL Play by Play data for 2009-2018.
 
-- Each trip appears with delay in the data, long after the completion of the ride
-- The Taxi ID is consistent for a given taxi medallion number, but was created specifically for the dataset
-- Location is provided only at the Census Tract [^4] and Community Area levels [^5]
-
-Other corrections applied to the data include:
-
-- Trip times less than zero or greater than 86,400 seconds are removed.
-- Trip lengths less than zero or greater than 3,500 miles are removed.
-- If any component of the trip cost is less than $0 or greater than $10,000, all components of the trip cost are removed.
+This package supplies freely available datasets for current and reproducible research in the statistical analysis of NFL, which has not been accessible in the past unlike other sports such as baseball, basketball, and hockey. Using the data from the package, the researchers from Carnegie Mellon also built reproducible methods for generating expected points and win probability models for the NFL [^6] which is included in the datasets.  
 
 # Data Description
 
-The NFL data for each season contains 257 different variables in attempt to explain every play of the game in every game of the season. Each and every play of the game is broken down into great detail containing information on game situation, players involed, resutls, and advanced football analytical metrics. Here are few variables correlating to these.
+The NFL data for each season contains 257 different variables in attempt to explain every play of the game in every game of the season. Each and every play of the game is broken down into great detail containing information on game situation, players involved, results, and advanced football analytic metrics. Here are few variables correlating to these.
 
  - Game situation : _Posteam_, _Defteam_,  _Game_date_
- - Players Invovled : _passer_player_name_, _receiver_player_name_, _rusher_player_name_, _punter_player_name_, _kicker_player_name_
+ - Players Involved : _passer_player_name_, _receiver_player_name_, _rusher_player_name_, _punter_player_name_, _kicker_player_name_
  - results : _yrd_gained_
- - advanced analytics : _wpa_
+ - advanced analytic : _wpa_
+
+To further explain WPA, WPA stands for win probability added. The difference between the team's win probability at the beginning of the play and at the end of the play. WPA measures each play's impact on the outcome of a game. WPA takes encounter of players who were directly involved in the play. For offensive team - players who ran, threw, kicker, received, or flagged for penalty- and for defensive team - players who tacked, sacked the ball carrier, caused a fumble, defended a pass, or flagged for penalty are considered. For purpose of our study, we will only focus on the offensive plays of a team. 
 
 # Data Cleaning
 
-1. Our project will only consider 2018 NFL season. The Atlatna Falcons and philadelphia Eagles played season openr on 09/06/2018, and final games of the season were played on 12/30/2018. We decided to focus on single 2018 season because of size of the data, and trend of the NFL games are rapidly changing now days, that playing styles from two seasons ago are considered "outdated". 
+1. Our project will only consider 2018 NFL season. The Atlanta Falcons and Philadelphia Eagles played season opener on 09/06/2018, and final games of the season were played on 12/30/2018. We decided to focus on single 2018 season because of size of the data, and trend of the NFL games are rapidly changing now days, that playing styles from two seasons ago are considered "outdated". 
 
-2. With 257 variables, we had to narrow down our variables. There are many variables there are quite meaningless. Based on our prior knowledge of the game, we will narrow down to variables that we believe might be a variables that caoches can input during the game. These include variables such as field position, game clock, and team's quaterback. These variables are subject to change as the study goes further. 
+2. With 257 variables, we had to narrow down our variables. There are many variables there are quite meaningless. Based on our prior knowledge of the game, we will narrow down to variables that we believe might be variables that coaches can input during the game. These include variables such as field position, game clock, and team's quarterback. These variables are subject to change as the study goes further. 
 
-3. In NFL there are 10 types of play a team can excute throughout the game. However, for our purpose of the study, we will remove following play types for following reasons: 
+3. In NFL there are 10 types of play a team can excite throughout the game. However, for our purpose of the study, we will remove following play types for following reasons: 
 
- - NA : these are game administrative play types such as end of the quarters, end of the regularation, and 2 minute warnings
- - qb_kneel : most of the time, QB will only kneel when the game result has already been decided and to run down the clock to the end of the game, so we will ignore these 
- - no_play : no_play represnts plays which penatly has occured. Further study will be needed in order to accruatly decide what we are going do with these plays. 
+ - NA : these are game administrative play types such as end of the quarters, end of the regulation, and 2 minute warnings
+ - QB_kneel : most of the time, QB will only kneel when the game result has already been decided and to run down the clock to the end of the game, so we will ignore these 
+ - kickoff : In NFL games, there are two kickoffs that always happen, once in the beginning of the 1st quarter and once more in the beginning of 3rd quarter. However, wpa is not calculated when the initial kickoff in the 1st quarter happens, so these will be ignored. However, any other times that kickoff occurs, wpa is valid. 
+ - no_play : no_play represents plays which penalty has occurred. Further study will be needed in order to accurately decide what we are going do with these plays. 
 
 # Statistical Learning Task
 
-That being said, the statistical learning task to accomplish this goal will be with the means of classification models. Given certain features of the dataset like the geographical location, the length of the trip, cost and many others we will be classifying the company that corresponding trip applies to. It is immediately apparent that binary classification models are out of the question unless we would like to target a specific company to make it the positive class meanwhile the others are grouped into another classification. The problem with this however is that could potentially make the dataset uneven and although there are methods to combat this problem, we would have to model depending how many unique companies are in the dataset. Multiclass classification would have to be the main method for our goal with use of K-Nearest Neighbors and Random Forests along with cross validation, where we will be using 2 metrics to maximize being accuracy and sensitivity. 
+That being said, the statistical learning task to accomplish this goal will be with the means of classification models. Given certain features of the data set like the geographical location, the length of the trip, cost and many others we will be classifying the company that corresponding trip applies to. It is immediately apparent that binary classification models are out of the question unless we would like to target a specific company to make it the positive class meanwhile the others are grouped into another classification. The problem with this however is that could potentially make the data set uneven and although there are methods to combat this problem, we would have to model depending how many unique companies are in the data set. Multi-class classification would have to be the main method for our goal with use of K-Nearest Neighbors and Random Forests along with cross validation, where we will be using 2 metrics to maximize being accuracy and sensitivity. 
 
 # Data Loading
 
-```{r package loading, warning = FALSE}
+```{r package loading, warning = FALSE, include=FALSE}
 library(dplyr)
 library(tidyverse)
 ```
 
 ```{r data loading, warning = FALSE}
+#For now, we will only conisder using 2018 season data only.
+
 df_2018_first = read_csv("/cloud/project/NFL_2018_first.csv")
 df_2018_second = read_csv("/cloud/project/NFL_2018_second.csv")
 df_2018 = rbind(df_2018_first, df_2018_second)
 ```
 
-```{r}
-head(df_2018)
-```
+## Data Cleaning
 
 ```{r cleaning up columns - temp}
 keep = c("posteam", "defteam", "yardline_100", "game_date", "game_seconds_remaining", "qtr", "down", "ydstogo", #game administravtive variables
@@ -86,17 +81,11 @@ keep = c("posteam", "defteam", "yardline_100", "game_date", "game_seconds_remain
          "run_location", "run_gap", #offensive run plays
          "field_goal_result", "kick_distance", #speical teams
          "posteam_timeouts_remaining", "defteam_timeouts_remaining", #time out remainings
-         "wpa", #responce variables
-         "passer_player_name", "receiver_player_name", "rusher_player_name", "punter_player_name", "kicker_player_name" #Offensive focal point player's name
-         )
+         "wpa") #responce variables
 
 #These are variables that I might thought it would be useful for us to limit down to, feel free to add any as needed
 
 df_2018_reduced = subset(df_2018, select = keep)
-```
-
-```{r}
-unique(df_2018$play_type)
 ```
 
 ```{r, checking no_plays in play type}
@@ -104,29 +93,54 @@ unique(df_2018$play_type)
 #head(no_play)
 ```
 
-
 ```{r, removing adminstrative playtypes}
+#adminstratvie plays such as two-minute warnings will be removed
 #game_warnings = sum(is.na(df_2018$play_type)) #all of the NA playtypes are either end of quaters or two-min warnings. (1429 of them)
 
-df_2018_reduced = df_2018_reduced[complete.cases(df_2018_reduced[ , "play_type"]),]
+df_2018_reduced_no_admin_plays = df_2018_reduced[complete.cases(df_2018_reduced[ , "play_type"]),] #40607 rows
+```
+
+```{r, removing qb kneels}
+df_2018_reduced_no_qb_kneels = subset(df_2018_reduced_no_admin_plays, df_2018_reduced_no_admin_plays$play_type != "qb_kneel") #40247 rows
+```
+
+```{r, removing inital kickoffs}
+df_2018_reduced_no_kick_off = df_2018_reduced_no_qb_kneels %>%
+  subset(game_seconds_remaining != 3600 & play_type != "kickoff") #37641 rows
+```
+
+```{r clenaing up various missing wpa rows}
+df_2018_cleaned = df_2018_reduced_no_kick_off[complete.cases(df_2018_reduced_no_kick_off[ , "wpa"]),]
+```
+
+```{r variable factor type conversion}
+factor_list = c("posteam", "defteam", "play_type")
+
+df_2018_cleaned[factor_list] <- lapply(df_2018_cleaned[factor_list], factor)
+```
+
+```{r}
+head(df_2018_cleaned)
 ```
 
 # Data Modeling 
 
 ```{r initial_modeling}
-lm_mod = lm(wpa ~  quarter_seconds_remaining + yards_gained + yards_after_catch, data = df_2018)
+lm_mod = lm(wpa ~  game_seconds_remaining + yards_gained + yards_after_catch, data = df_2018_cleaned)
 summary(lm_mod)
 ```
 
 
+[^1]: [Kaggle: Detailed NFL Play-by-Play Data 2009-2018](https://www.kaggle.com/maxhorowitz/nflplaybyplay2009to2016)
+
+[^2]: [GitHub: 'nflscrapR-data'](https://github.com/ryurko/nflscrapR-data)
+
+[^3]: [Carnegie Mellon University: Statistics & Data Science](http://www.stat.cmu.edu)
+
+[^4]: [GitHub: nflscrapR](https://github.com/maksimhorowitz/nflscrapR)
+
+[^5]: [NFL: Official Website](https://www.nfl.com)
+
+[^6]: [GitHub: nflscrapR-models](https://github.com/ryurko/nflscrapR-models)
 
 
-[^1]: [Chicago Taxi Trips Data](https://www.kaggle.com/chicago/chicago-taxi-trips-bq)
-
-[^2]: [Digital Hub: Chicago Taxi Data Released](https://digital.cityofchicago.org/index.php/chicago-taxi-data-released/)
-
-[^3]: [City of Chicago: BACP](https://www.chicago.gov/city/en/depts/bacp/provdrs/vehic.html)
-
-[^4] : [Chicago Data Portal: Census Tracts](https://data.cityofchicago.org/Facilities-Geographic-Boundaries/Boundaries-Census-Tracts-2010/5jrd-6zik)
-
-[^5]: [Chicago Data Portal: Community Areas](https://data.cityofchicago.org/Facilities-Geographic-Boundaries/Boundaries-Community-Areas-current-/cauq-8yn6)
