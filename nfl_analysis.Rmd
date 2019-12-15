@@ -62,6 +62,7 @@ That being said, the statistical learning task to accomplish this goal will be w
 ```{r package loading, warning = FALSE, include=FALSE}
 library(dplyr)
 library(tidyverse)
+library(caret)
 ```
 
 ```{r data loading, warning = FALSE}
@@ -119,15 +120,21 @@ factor_list = c("posteam", "defteam", "play_type")
 df_2018_cleaned[factor_list] <- lapply(df_2018_cleaned[factor_list], factor)
 ```
 
-```{r}
-head(df_2018_cleaned)
-```
-
 # Data Modeling 
 
 ```{r initial_modeling}
 lm_mod = lm(wpa ~  game_seconds_remaining + yards_gained + yards_after_catch, data = df_2018_cleaned)
 summary(lm_mod)
+```
+
+```{r, ridge modeling}
+ridge_data_x = df_2018_cleaned %>% select(-wpa)
+ridge_data_y = df_2018_cleaned %>% pull(wpa)
+
+ridge_mod  = glance.cv.glmnet(x = x_ridge, y = y_ridge, alpha = 0)
+
+plot(ridged_mod, xvar = "lambda", label = TRUE)
+grid()
 ```
 
 
