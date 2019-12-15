@@ -121,9 +121,6 @@ summary(lm_mod)
 
 
 
-
-
-
 [^1]: [Chicago Taxi Trips Data](https://www.kaggle.com/chicago/chicago-taxi-trips-bq)
 
 [^2]: [Digital Hub: Chicago Taxi Data Released](https://digital.cityofchicago.org/index.php/chicago-taxi-data-released/)
