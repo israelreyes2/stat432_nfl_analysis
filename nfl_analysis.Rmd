@@ -21,24 +21,13 @@ NFL is one of the most-loved professional sport league in the United States. NFL
 
 In Super Bowl XLIX (Seattle Seahawks vs. New England Patriots), at the last second of the game, one of the most questions play call was made by Seattle Seahawks and their head coach, Pete Caroll. Down by 4 and on 2nd and goal with 26 seconds to go, Pete Caroll decided to throw the ball instead of running the ball. In context of the game, Seattle Seahawks had one of the most dominant running back in the game, Marshawn  Lynch, but they decided to throw the ball resulting in interception. Many questioned, why would Seahawks pass the ball at that point of the game? This play still hurts Seahawks fans till now today. With that, did Pete Caroll and Seattle Seahawks believe that passing play would have resulted in increasing the probability of the winning game more than running game? With this case as a motivation, we will conduct our study. 
 
-In an attempt to construct a meaningful and effective ways for coaches to call what type of play purely relying on analytic probability, various 
-various statistical learning techniques will be applied to the NFL play-by-play data. The main goal of our study is to see if football-game related measures such as game clock situation, position on the field, players on the field at the moment can increase the chance of winning the most for the team. In NFL, there is a measure called, winning percentage. Winning percentage measures probability of a team winning at the given moment of the game, and since football game stop after each play, winning percentage changes after each play. Can we possibly decide which play will increase team's chance of winning according to game-related status? Our model will focus only on the offensive side of the ball. Ultimately, we will utilize statistical learning techniques for offensive coordinator to call plays based on analytic. 
+In an attempt to construct a meaningful and effective ways for coaches to call what type of play purely relying on analytic probability, various statistical learning techniques will be applied to the NFL play-by-play data. The main goal of our study is to see if football-game related measures such as game clock situation, position on the field, players on the field at the moment can increase the chance of winning the most for the team. In NFL, there is a measure called, winning percentage. Winning percentage measures probability of a team winning at the given moment of the game, and since football game stop after each play, winning percentage changes after each play. Can we possibly decide which play will increase team's chance of winning according to game-related status? Our model will focus only on the offensive side of the ball. Ultimately, we will utilize statistical learning techniques for offensive coordinator to call plays based on analytic. 
 
-# Background Information On Data (Jinhee)
+# Background Information On Data
 
-The data set originates from the Chicago Digital Hub [^2] and was accessed through Kaggle [^1]. The safety and quality of taxi rides in Chicago are guaranteed through BACP [^3] (Department of Business Affairs and Consumer Protection) where they are authorized to collect information on taxi rides. This data is reported periodically through two major payment processors in which not all trips are reported but is believed to cover most of the taxi rides in Chicago. Based on this data reporting process, the data set contains over 100 million taxi rides in Chicago from 2013. 
+The dataset was retrived from Kaggle [^1] and originates from github [^2]. In order to provide clean, play-by-play data via open-source software package in football, a group of Carnegie Mellon University statistical researchers [^3] Maksim horowitz, Ron Yurko, and Sam Ventura built an nflscrapR [^4] package in R which outputs datasets for individual play, player, game, and season levels accessed from NFL [^5]. There are three versions of the data sources in Kaggle, and we will be using the most recent version (v5) for NFL Play by Play data for 2009-2018.
 
-Due to private concerns, following measures were implemented:
-
-- Each trip appears with delay in the data, long after the completion of the ride
-- The Taxi ID is consistent for a given taxi medallion number, but was created specifically for the data set
-- Location is provided only at the Census Tract [^4] and Community Area levels [^5]
-
-Other corrections applied to the data include:
-
-- Trip times less than zero or greater than 86,400 seconds are removed.
-- Trip lengths less than zero or greater than 3,500 miles are removed.
-- If any component of the trip cost is less than $0 or greater than $10,000, all components of the trip cost are removed.
+This package supplies freely available datasets for current and reproducible research in the statistical analysis of NFL, which have not been accessible in the past unlike other sports such as baseball, basketball, and hockey. Using the datas from the package, the researchers from Carnegie Mellon also built reproducible methods for generating expected points and win probability models for the NFL [^6] which is included in the datasets.  
 
 # Data Description
 
@@ -161,18 +150,14 @@ lm_mod = lm(wpa ~  game_seconds_remaining + yards_gained + yards_after_catch, da
 summary(lm_mod)
 ```
 
+[^1]: [Kaggle: Detailed NFL Play-by-Play Data 2009-2018](https://www.kaggle.com/maxhorowitz/nflplaybyplay2009to2016)
 
+[^2]: [GitHub: 'nflscrapR-data'](https://github.com/ryurko/nflscrapR-data)
 
+[^3]: [Carnegie Mellon University: Statistics & Data Science](http://www.stat.cmu.edu)
 
+[^4] : [GitHub: nflscrapR](https://github.com/maksimhorowitz/nflscrapR)
 
+[^5]: [NFL: Official Website](https://www.nfl.com)
 
-
-[^1]: [Chicago Taxi Trips Data](https://www.kaggle.com/chicago/chicago-taxi-trips-bq)
-
-[^2]: [Digital Hub: Chicago Taxi Data Released](https://digital.cityofchicago.org/index.php/chicago-taxi-data-released/)
-
-[^3]: [City of Chicago: BACP](https://www.chicago.gov/city/en/depts/bacp/provdrs/vehic.html)
-
-[^4] : [Chicago Data Portal: Census Tracts](https://data.cityofchicago.org/Facilities-Geographic-Boundaries/Boundaries-Census-Tracts-2010/5jrd-6zik)
-
-[^5]: [Chicago Data Portal: Community Areas](https://data.cityofchicago.org/Facilities-Geographic-Boundaries/Boundaries-Community-Areas-current-/cauq-8yn6)
+[^6]: [GitHub: nflscrapR-models](https://github.com/ryurko/nflscrapR-models)
