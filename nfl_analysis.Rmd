@@ -156,7 +156,7 @@ summary(lm_mod)
 
 [^3]: [Carnegie Mellon University: Statistics & Data Science](http://www.stat.cmu.edu)
 
-[^4] : [GitHub: nflscrapR](https://github.com/maksimhorowitz/nflscrapR)
+[^4]: [GitHub: nflscrapR](https://github.com/maksimhorowitz/nflscrapR)
 
 [^5]: [NFL: Official Website](https://www.nfl.com)
 
