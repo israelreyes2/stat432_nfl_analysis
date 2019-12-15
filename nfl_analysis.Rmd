@@ -25,9 +25,9 @@ In an attempt to construct a meaningful and effective ways for coaches to call w
 
 # Background Information On Data
 
-The dataset was retrived from Kaggle [^1] and originates from github [^2]. In order to provide clean, play-by-play data via open-source software package in football, a group of Carnegie Mellon University statistical researchers [^3] Maksim horowitz, Ron Yurko, and Sam Ventura built an nflscrapR [^4] package in R which outputs datasets for individual play, player, game, and season levels accessed from NFL [^5]. There are three versions of the data sources in Kaggle, and we will be using the most recent version (v5) for NFL Play by Play data for 2009-2018.
+The dataset was retrieved from Kaggle [^1] and originates from github [^2]. In order to provide clean, play-by-play data via open-source software package in football, a group of Carnegie Mellon University statistical researchers [^3] Maksim horowitz, Ron Yurko, and Sam Ventura built an nflscrapR [^4] package in R which outputs datasets for individual play, player, game, and season levels accessed from NFL [^5]. There are three versions of the data sources in Kaggle, and we will be using the most recent version (v5) for NFL Play by Play data for 2009-2018.
 
-This package supplies freely available datasets for current and reproducible research in the statistical analysis of NFL, which have not been accessible in the past unlike other sports such as baseball, basketball, and hockey. Using the datas from the package, the researchers from Carnegie Mellon also built reproducible methods for generating expected points and win probability models for the NFL [^6] which is included in the datasets.  
+This package supplies freely available datasets for current and reproducible research in the statistical analysis of NFL, which have not been accessible in the past unlike other sports such as baseball, basketball, and hockey. Using the data from the package, the researchers from Carnegie Mellon also built reproducible methods for generating expected points and win probability models for the NFL [^6] which is included in the datasets.  
 
 # Data Description
 
