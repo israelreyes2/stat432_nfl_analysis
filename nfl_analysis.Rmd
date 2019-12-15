@@ -126,6 +126,7 @@ df_2018_cleaned$pass_location[is.na(df_2018_cleaned$pass_location)] = "NA"
 df_2018_cleaned$run_location[is.na(df_2018_cleaned$run_location)] = "NA"
 df_2018_cleaned$run_gap[is.na(df_2018_cleaned$run_gap)] = "NA"
 df_2018_cleaned$field_goal_result[is.na(df_2018_cleaned$field_goal_result)] = "NA"
+df_2018_cleaned$pass_length[is.na(df_2018_cleaned$pass_length)] = "NA"
 ```
 
 ```{r variable factor type conversion}
@@ -145,6 +146,8 @@ nfl_tst = testing(nfl_tst_trn_split)
 ```
 
 # Data Modeling 
+
+
 
 [^1]: [Kaggle: Detailed NFL Play-by-Play Data 2009-2018](https://www.kaggle.com/maxhorowitz/nflplaybyplay2009to2016)
 
