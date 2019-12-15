@@ -34,8 +34,7 @@ This package supplies freely available datasets for current and reproducible res
 The NFL data for each season contains 257 different variables in attempt to explain every play of the game in every game of the season. Each and every play of the game is broken down into great detail containing information on game situation, players involved, results, and advanced football analytic metrics. Here are few variables correlating to these.
 
  - Game situation : _Posteam_, _Defteam_,  _Game_date_
- - Players Involved : _passer_player_name_, _receiver_player_name_, _rusher_player_name_, _punter_player_name_, _kicker_player_name_
- - results : _yrd_gained_
+ - Play results : _yrd_gained_, _yrd_after_catch_
  - advanced analytic : _wpa_
 
 To further explain WPA, WPA stands for win probability added. The difference between the team's win probability at the beginning of the play and at the end of the play. WPA measures each play's impact on the outcome of a game. WPA takes encounter of players who were directly involved in the play. For offensive team - players who ran, threw, kicker, received, or flagged for penalty- and for defensive team - players who tacked, sacked the ball carrier, caused a fumble, defended a pass, or flagged for penalty are considered. For purpose of our study, we will only focus on the offensive plays of a team. 
@@ -122,6 +121,13 @@ df_2018_cleaned$yards_after_catch[is.na(df_2018_cleaned$yards_after_catch)] = 0
 df_2018_cleaned$kick_distance[is.na(df_2018_cleaned$kick_distance)] = 0
 ```
 
+```{r}
+df_2018_cleaned$pass_location[is.na(df_2018_cleaned$pass_location)] = "NA"
+df_2018_cleaned$run_location[is.na(df_2018_cleaned$run_location)] = "NA"
+df_2018_cleaned$run_gap[is.na(df_2018_cleaned$run_gap)] = "NA"
+df_2018_cleaned$field_goal_result[is.na(df_2018_cleaned$field_goal_result)] = "NA"
+```
+
 ```{r variable factor type conversion}
 factor_list = c("posteam", "defteam", "play_type", "pass_location", "pass_length", "run_location", "run_gap", "field_goal_result")
 
@@ -139,8 +145,6 @@ nfl_tst = testing(nfl_tst_trn_split)
 ```
 
 # Data Modeling 
-
-
 
 [^1]: [Kaggle: Detailed NFL Play-by-Play Data 2009-2018](https://www.kaggle.com/maxhorowitz/nflplaybyplay2009to2016)
 
