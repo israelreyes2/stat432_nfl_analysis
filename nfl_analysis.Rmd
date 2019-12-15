@@ -131,6 +131,19 @@ summary(lm_mod)
 ```
 
 
+# Training Testing Data Split
+```{r}
+library(rsample)
+set.seed(1)
+
+# test-train split
+nfl_tst_trn_split = initial_split(df_2018_cleaned, prop = 0.80)
+nfl_trn = training(nfl_tst_trn_split)
+nfl_tst = testing(nfl_tst_trn_split)
+
+```
+
+
 [^1]: [Kaggle: Detailed NFL Play-by-Play Data 2009-2018](https://www.kaggle.com/maxhorowitz/nflplaybyplay2009to2016)
 
 [^2]: [GitHub: 'nflscrapR-data'](https://github.com/ryurko/nflscrapR-data)
