@@ -143,9 +143,28 @@ set.seed(1)
 nfl_tst_trn_split = initial_split(df_2018_cleaned, prop = 0.80)
 nfl_trn = training(nfl_tst_trn_split)
 nfl_tst = testing(nfl_tst_trn_split)
+
+nfl_trn = na.omit(nfl_trn)
 ```
 
 # Data Modeling 
+```{r linear modeling and stepwise}
+calc_rmse = function(actual, predicted) {
+  sqrt(mean( (actual - predicted) ^2 ))
+}
+
+nfl_lm = lm(wpa ~., data = nfl_trn)
+lm_pred = predict(nfl_lm, nfl_trn)
+calc_rmse(actual = nfl_trn$wpa, predicted = lm_pred)
+
+
+train_control = trainControl(method = "cv", number  = 10)
+set.seed(42)
+nfl_step = train(wpa ~., data = nfl_trn, method = "leapBackward", 
+                 tuneGrid = data.frame(nvmax = 1:24),
+                 trControl = train_control, na.action = na.omit) 
+```
+Linear model gives us a training rmse of 0.03739534, the cross validated step function where we are tuning for the best number of parameters is using all 24 features which gives us an CV rmse of 0.04274302, this was using 10 folds. Since all features gives us the best cv rmse, the full model is no different than the cv one. 
 
 
 
