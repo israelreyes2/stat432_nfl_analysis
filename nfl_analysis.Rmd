@@ -4,7 +4,6 @@ author:
 - Eric Jong Bum Kim (jekim3)
 - Israel Reyes (ir2)
 - Jihee Hwang (jhwang55)
-- Hyun Suk Lee ()
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   html_document: default
@@ -17,11 +16,11 @@ abstract: Coming Soon
 
 # Introduction
 
-NFL is one of the most-loved professional sport league in the United States. NFL is undoubtedly the top sport league in the United States bringing in over $13 billion in revenue each year. With that, each and every player on a team is under tremendous pressure to perform under the spot light. Let's look at the other important piece of NFL games, the coaches. Some say that football is a chess game, which head coaches are the players of the game, and NFL players are pieces which head coaches move to win the game. With that, every head coach's goals to call plays which will give them any sort of edge over their opponent. American football is quite different from other sports since after each play, game stops. After each play, coaches tell their players to run a play which will allow them to score. Head coaches call plays based on combination of experiences, time on clock, field positions, their team's best players, and more. What if, like other sports, analytic can call plays? 
+NFL is one of the most-loved professional sports leagues in the United States. NFL is undoubtedly the top sports league in the United States bringing in over $13 billion in revenue each year. With that, each and every player on a team is under tremendous pressure to perform under the spotlight. Let's look at the other important piece of NFL games, the coaches. Some say that football is a chess game, which head coaches are the players of the game, and NFL players are pieces that head coaches move to win the game. With that, every head coach's goals to call plays which will give them any sort of edge over their opponent. American football is quite different from other sports since, after each play, the game stops. After each play, coaches tell their players to run a play which will allow them to score. Head coaches call plays based on a combination of experiences, time on the clock, field positions, their team's best players, and more. What if, like other sports, analytic can call plays? 
 
-In Super Bowl XLIX (Seattle Seahawks vs. New England Patriots), at the last second of the game, one of the most questionable play call was made by Seattle Seahawks and their head coach, Pete Caroll. Down by 4 and on 2nd and goal with 26 seconds to go, Pete Caroll decided to throw the ball instead of running the ball. In context of the game, Seattle Seahawks had one of the most dominant running back in the game, Marshawn  Lynch, but they decided to throw the ball resulting in interception. Many questioned, why would Seahawks pass the ball at that point of the game? This play still hurts Seahawks fans till now today. With that, did Pete Caroll and Seattle Seahawks believe that passing play would have resulted in increasing the probability of the winning game more than running game? With this case as a motivation, we will conduct our study. 
+In Super Bowl XLIX (Seattle Seahawks vs. New England Patriots), at the last second of the game, one of the most questionable plays calls were made by Seattle Seahawks and their head coach, Pete Caroll. Down by 4 and on 2nd and goal with 26 seconds to go, Pete Caroll decided to throw the ball instead of running the ball. In the context of the game, Seattle Seahawks had one of the most dominant running back in the game, Marshawn  Lynch, but they decided to throw the ball resulting in an interception. Many questioned, why would Seahawks pass the ball at that point in the game? This play still hurts Seahawks fans till now today. With that, did Pete Caroll and Seattle Seahawks believe that passing play would have resulted in increasing the probability of the winning game more than a running game? With this case as a motivation, we will conduct our study. 
 
-In an attempt to construct meaningful and effective ways for coaches to call what type of play purely rely on analytic probability, various statistical learning techniques will be applied to the NFL play-by-play data. The main goal of our study is to see if football-game related measures such as game clock situation, position on the field, and players on the field at the moment can increase the chance of winning the most for the team. In NFL, there is a measure called, winning percentage. Winning percentage measures probability of a team winning at the given moment of the game, and since football game stop after each play, winning percentage changes after each play. Can we possibly decide which play will increase team's chance of winning according to game-related status? Our model will focus only on the offensive side of the ball. Ultimately, we will utilize statistical learning techniques for offensive coordinator to call plays based on analytic. 
+In an attempt to construct meaningful and effective ways for coaches to call what type of play purely rely on analytic probability, various statistical learning techniques will be applied to the NFL play-by-play data. The main goal of our study is to see if football-game related measures such as game clock situation, position on the field, and players on the field at the moment can increase the chance of winning the most for the team. In NFL, there is a measure called, winning percentage. Winning percentage measures the probability of a team winning at the given moment of the game, and since football game stop after each play, winning percentage changes after each play. Can we possibly decide which play will increase the team's chance of winning according to game-related status? Our model will focus only on the offensive side of the ball. Ultimately, we will utilize statistical learning techniques for an offensive coordinator to call plays based on analytic. 
 
 # Background Information On Data
 
@@ -67,11 +66,9 @@ library(glmnet)
 ```
 
 ```{r data loading, warning = FALSE}
-#For now, we will only conisder using 2018 season data only.
-
-df_2018_first = read_csv("/cloud/project/NFL_2018_first.csv")
-df_2018_second = read_csv("/cloud/project/NFL_2018_second.csv")
-df_2018 = rbind(df_2018_first, df_2018_second)
+df_2018_first = read_csv("/cloud/project/NFL_2018_first.csv") #first half data only
+df_2018_second = read_csv("/cloud/project/NFL_2018_second.csv") #second half data only
+df_2018 = rbind(df_2018_first, df_2018_second) #combining them both
 ```
 
 ## Data Cleaning
@@ -84,8 +81,6 @@ keep = c("posteam", "defteam", "yardline_100", "game_date", "game_seconds_remain
          "field_goal_result", "kick_distance", #speical teams
          "posteam_timeouts_remaining", "defteam_timeouts_remaining", #time out remainings
          "wpa") #responce variables
-
-#These are variables that I might thought it would be useful for us to limit down to, feel free to add any as needed
 
 df_2018_reduced = subset(df_2018, select = keep)
 ```
@@ -121,7 +116,7 @@ df_2018_cleaned$yards_after_catch[is.na(df_2018_cleaned$yards_after_catch)] = 0
 df_2018_cleaned$kick_distance[is.na(df_2018_cleaned$kick_distance)] = 0
 ```
 
-```{r}
+```{r replacing NAs with characters}
 df_2018_cleaned$pass_location[is.na(df_2018_cleaned$pass_location)] = "NA"
 df_2018_cleaned$run_location[is.na(df_2018_cleaned$run_location)] = "NA"
 df_2018_cleaned$run_gap[is.na(df_2018_cleaned$run_gap)] = "NA"
@@ -147,6 +142,46 @@ nfl_tst = testing(nfl_tst_trn_split)
 
 # Data Modeling 
 
+```{r calculating rmse}
+calc_rmse = function(actual, predicted){
+  sqrt(mean((actual - predicted)^2))
+}
+```
+
+```{r ridge modeling}
+# Omitting random NAs in the data
+nfl_trn = na.omit(nfl_trn)
+nfl_tst = na.omit(nfl_tst)
+
+# Train data frame matrix
+trn_x = model.matrix(wpa ~ ., nfl_trn)[, -1]
+trn_y = nfl_trn %>%
+  select(wpa) %>%
+  unlist() %>%
+  as.numeric()
+
+# Test data frame matrix
+tst_x = model.matrix(wpa ~., nfl_tst)[, -1]
+tst_y = nfl_trn %>%
+  select(wpa) %>%
+  unlist() %>%
+  as.numeric()
+
+# Setting the range of lambda values
+lambda_seq  = 10^seq(2, -2, by = -.1)
+
+# Using glmnet function to build the ridge regression model
+cv_fit = cv.glmnet(trn_x, trn_y, alpha = 0, lambda = lambda_seq, nfolds = 10)
+plot(cv_fit)
+
+# Best lambda value
+best_lambda = cv_fit$lambda.min
+
+# Calculating rmse 
+predicted = predict(cv_fit, trn_x)
+
+ridge_model_RMSE = calc_rmse(trn_y, predicted)
+```
 
 
 [^1]: [Kaggle: Detailed NFL Play-by-Play Data 2009-2018](https://www.kaggle.com/maxhorowitz/nflplaybyplay2009to2016)
