@@ -41,41 +41,40 @@ To further explain WPA measure, WPA stands for win probability added. The differ
 
 # Data Cleaning
 
-1. Our project will only consider the 2018 NFL season. 2018 season opened with Atlanta Falcons playing Philadelphia Eagles on 09/06/2018 and ended on 12/30/2018. We decided to focus on the 2018 season only due to the size of the data, and the ever-changing trends of the style of the game. 
 
-2. With 257 variables, we had to narrow down our variables. There are many variables there are quite meaningless. Based on our prior knowledge of the game, we will narrow down to variables that we believe might be variables that coaches can input during the game. These include variables such as field position, game clock situations, and result of the game. these variables are subject to change as the study goes further. 
+Our project will only consider the 2018 NFL season. 2018 season opened with Atlanta Falcons playing Philadelphia Eagles on 09/06/2018 and ended on 12/30/2018. We decided to focus on the 2018 season only due to the size of the data, and the ever-changing trends of the style of the game. 
 
-3. We will consider variables that are measured after the plays, such as the yard gained after the catch. Putting on the offensive coordinator's hat, I would assume if I run a pass plays, I expect my receiver to catch the pass and run as much as they can. Even though yards after the catch are unpredictable, if I were an offensive coordinator, I would have confidence in my receiver to gain yards after catching the pass. 
+With 257 variables, we had to narrow down our variables. There are many variables there are quite meaningless. Based on our prior knowledge of the game, we will narrow down to variables that we believe might be variables that coaches can input during the game. These include variables such as field position, game clock situations, and result of the game. these variables are subject to change as the study goes further. 
 
-4. In our data, there are 10 different types of plays a team execute in the game. However, for the purpose of our study, we will remove the following play types for the following reasons. 
+We will consider variables that are measured after the plays, such as the yard gained after the catch. Putting on the offensive coordinator's hat, I would assume if I run a pass plays, I expect my receiver to catch the pass and run as much as they can. Even though yards after the catch are unpredictable, if I were an offensive coordinator, I would have confidence in my receiver to gain yards after catching the pass. 
 
- - NA: these are game administrative play types such as the end of the quarters, end of the regulation, and 2-minute warnings. These are already considered with the game time remaining. 
+In our data, there are 10 different types of plays a team execute in the game. However, for the purpose of our study, we will remove the following play types for the following reasons. 
 
- - QB_kneel: most of the time, QB will only kneel when the game result has already been decided and to run down the clock to the end of the game, so we will ignore these.
+  - NA: these are game administrative play types such as the end of the quarters, end of the regulation, and 2-minute warnings. These are already considered with the game time remaining. 
 
- - kickoff: In NFL games, two kickoffs always happen, once at the beginning of the 1st quarter and once more at the beginning of the 3rd quarter. However, WPA is not calculated when the initial kickoff in the 1st quarter happens, so these will be ignored. However, WPA from any other kickoffs, after scoring, is valid. 
+  - QB_kneel: most of the time, QB will only kneel when the game result has already been decided and to run down the clock to the end of the game, so we will ignore these.
 
- - no_play: no_play represents plays in which penalty has occurred. We will ignore these since an offensive coordinator will never expect their own plays to be called for a penalty. For the purpose of calling plays, penalty factors are not considered.
+  - kickoff: In NFL games, two kickoffs always happen, once at the beginning of the 1st quarter and once more at the beginning of the 3rd quarter. However, WPA is not calculated when the initial kickoff in the 1st quarter happens, so these will be ignored. However, WPA from any other kickoffs, after scoring, is valid. 
 
-5. After cleaning up the variables based on our prior knowledge of the game, the following variables' NAs will be replaced with the following methods.
+  - no_play: no_play represents plays in which penalty has occurred. We will ignore these since an offensive coordinator will never expect their own plays to be called for a penalty. For the purpose of calling plays, penalty factors are not considered.
+
+After cleaning up the variables based on our prior knowledge of the game, the following variables' NAs will be replaced with the following methods.
 
 These are numerical variables, and for these NAs represented followings and are replaced by 0:
+
   - Air Yards: NAs are when either running or special team plays are called
   - Yards After Catch: NAs are when either running or special team players are called or 0-yard gains after the catch
   - Kick Distance: Non-special team plays are called
-  
-We decided that replacing NAs with 0 made sense for these variables.
 
-These are character variables, and these NAs are replaced with "NA":
+These are character variables, and these NAs are replaced with "NA" since NAs represent other types of plays are called:
+
  - Pass Location
  - Run Location
  - Run Gap
  - Field Goal Result
  - Pass Length 
- 
- We decided that replacing NAs with "NA" since NAs represent other types of plays are called. 
 
-6. Variables are transformed into factor types to ensure our model will intake them accordingly. 
+Variables are transformed into factor types to ensure our model will intake them accordingly. 
 
 # Statistical Learning Task
 
@@ -111,11 +110,6 @@ keep = c("posteam", "defteam", "yardline_100", "game_date", "game_seconds_remain
          "wpa") #responce variables
 
 df_2018_reduced = subset(df_2018, select = keep)
-```
-
-```{r, checking no_plays in play type}
-#no_play = subset(df_2018, df_2018$play_type == "no_play")
-#head(no_play)
 ```
 
 ```{r, removing adminstrative playtypes}
@@ -159,6 +153,7 @@ df_2018_cleaned[factor_list] <- lapply(df_2018_cleaned[factor_list], factor)
 ```
 
 # Data Split
+
 ```{r data split}
 set.seed(1)
 
@@ -175,11 +170,17 @@ nfl_val = testing(nfl_est_val_split)
 ```
 
 # Data Modeling 
-```{r linear modeling and stepwise}
+
+```{r calculating rmse function}
+calc_rmse = function(actual, predicted){
+  sqrt(mean((actual - predicted)^2))
+}
+```
+
+```{r linear modeling and stepwise, cache= TRUE}
 nfl_lm = lm(wpa ~., data = nfl_trn)
 lm_pred = predict(nfl_lm, nfl_trn)
-calc_rmse(actual = nfl_trn$wpa, predicted = lm_pred)
-
+linear_rmse = calc_rmse(actual = nfl_trn$wpa, predicted = lm_pred)
 
 train_control = trainControl(method = "cv", number  = 10)
 set.seed(42)
@@ -189,15 +190,10 @@ nfl_step = train(wpa ~., data = nfl_trn, method = "leapBackward",
 nfl_step$results
 nfl_step$bestTune
 ```
+
 Linear model gives us a training rmse of 0.03739534, the cross validated step function where we are tuning for the best number of parameters is using all 24 features which gives us an CV rmse of 0.04274302, this was using 10 folds. Since all features gives us the best cv rmse, the full model is no different than the cv one. 
 
-```{r calculating rmse}
-calc_rmse = function(actual, predicted){
-  sqrt(mean((actual - predicted)^2))
-}
-```
-
-```{r lasso model}
+```{r lasso model, cache= TRUE}
 # Omitting random NAs in the data
 nfl_est = na.omit(nfl_est)
 nfl_val = na.omit(nfl_val)
@@ -238,7 +234,7 @@ ridge_pred = as.vector(ridge_pred)
 ridge_model_RMSE = calc_rmse(val_y, ridge_pred)
 ```
 
-```{r cache = TRUE}
+```{r, GBM modeling, cache = TRUE}
 #Use cross validation with 5folds
 cv = trainControl(method = "cv", number = 10)
 set.seed(42)
@@ -252,17 +248,11 @@ gbm_pred = predict(gbm_model, val_x)
 gbm_RMSE = calc_rmse(val_y, gbm_pred)
 ```
 
-```{r}
-linear_model = lm(est_y ~ est_x)
-linear_pred = predict(linear_model, as.data.frame(val_x))
-linear_rmse = calc_rmse(linear_pred, val_y)
-```
-
 # Results
 ```{r}
 results = tibble(
-  Model = c("Lasso", "Ridge", "GBM", "Linear"),
-  "Validation RMSE" = c(lasso_rmse, ridge_model_RMSE, gbm_RMSE, linear_rmse)) %>%
+  Modrl = c("Linear", "Ridge", "Lasso", "GBM"),
+  "Validation RMSE" = c(linear_rmse, ridge_model_RMSE, lasso_rmse, gbm_RMSE )) %>%
   kable(digits = 3) %>%
   kable_styling("striped", full_width = FALSE)
 ```
