@@ -102,14 +102,17 @@ library(glmnet)
 library(kableExtra)
 ```
 
-```{r data loading, echo = FALSE}
-#/cloud/project/
-df_2018_first = read_csv("/cloud/project/NFL_2018_first.csv") #first half data only
-df_2018_second = read_csv("/cloud/project/NFL_2018_second.csv") #second half data only
+```{r data loading, message = FALSE, warning=FALSE, echo = TRUE}
+#df_2018_first = read_csv("/cloud/project/NFL_2018_first.csv") #first half data only
+
+df_2018_first = read_csv("C:/Users/jekim3.UOFI.000.001.002/Desktop/NFL_2018_first.csv")
+df_2018_second = read_csv("C:/Users/jekim3.UOFI.000.001.002/Desktop/NFL_2018_second.csv")
+
+#df_2018_second = read_csv("/cloud/project/NFL_2018_second.csv") #second half data only
 df_2018 = rbind(df_2018_first, df_2018_second) #combining them both
 ```
 
-```{r variable clean up offense only, echo = FALSE}
+```{r variable clean up offense only, warning=FALSE, echo = FALSE}
 keep = c("posteam", "defteam", "yardline_100", "game_date", "game_seconds_remaining", "qtr", "down", "ydstogo", #game administravtive variables
          "play_type","shotgun", "no_huddle", "qb_dropback", "pass_location", #offensive game types
          "yards_gained", "pass_length", "air_yards", "yards_after_catch", #offensive pass play results
@@ -121,7 +124,7 @@ keep = c("posteam", "defteam", "yardline_100", "game_date", "game_seconds_remain
 df_2018_reduced = subset(df_2018, select = keep)
 ```
 
-```{r removing adminstrative playtypes, echo = FALSE}
+```{r removing adminstrative playtypes, warning=FALSE, echo = FALSE}
 #adminstratvie plays such as two-minute warnings will be removed
 #game_warnings = sum(is.na(df_2018$play_type)) #all of the NA playtypes are either end of quaters or two-min warnings. (1429 of them)
 
@@ -178,13 +181,16 @@ nfl_val = testing(nfl_est_val_split)
 
 ## Data Modeling 
 
-```{r calculating rmse function, echo = FALSE}
+```{r calculating rmse function, message=FALSE, warning=FALSE, echo = FALSE}
 calc_rmse = function(actual, predicted){
   sqrt(mean((actual - predicted)^2))
 }
 ```
 
-```{r linear modeling and stepwise, cache= TRUE}
+```{r linear modeling and stepwise, results = 'hide', message=FALSE, warning=FALSE, cache= TRUE}
+nfl_trn = na.omit(nfl_trn)
+nfl_tst = na.omit(nfl_tst)
+
 nfl_lm = lm(wpa ~., data = nfl_trn)
 lm_pred = predict(nfl_lm, nfl_trn)
 linear_rmse = calc_rmse(actual = nfl_trn$wpa, predicted = lm_pred)
@@ -194,7 +200,7 @@ set.seed(42)
 nfl_step = train(wpa ~., data = nfl_trn, method = "leapBackward", 
                  tuneGrid = data.frame(nvmax = 1:24),
                  trControl = train_control, na.action = na.omit) 
-nfl_step$results
+#nfl_step$results
 nfl_step$bestTune
 ```
 
@@ -219,18 +225,21 @@ val_y = nfl_val %>%
   unlist() %>%
   as.numeric()
 
-set.seed(2)
+set.seed(42)
 lasso_mod = cv.glmnet(est_x, est_y, alpha = 1)
 
 lasso_pred = predict(lasso_mod, val_x)
 lasso_rmse = calc_rmse(val_y, lasso_pred)
 ```
 
+LASSO model gives us a trainning rmse of 0.03913281, the cross validated using deafult option. 
+
 ```{r ridge modeling, cache = TRUE}
 set.seed(42)
 # Using glmnet function to build the ridge regression model
 ridge_mod = cv.glmnet(est_x, est_y, alpha = 0,  nfolds = 10)
-plot(ridge_mod)
+
+#plot(ridge_mod)
 
 # Best lambda value
 best_lambda = ridge_mod$lambda.min
@@ -240,6 +249,8 @@ ridge_pred = predict(ridge_mod, val_x)
 ridge_pred = as.vector(ridge_pred)
 ridge_model_RMSE = calc_rmse(val_y, ridge_pred)
 ```
+
+Ridge model gives us a trainning rmse of 0.03931021, the cross-validation of 10 folds were used. 
 
 ```{r, GBM modeling, cache = TRUE}
 #Use cross validation with 5folds
@@ -255,15 +266,20 @@ gbm_pred = predict(gbm_model, val_x)
 gbm_RMSE = calc_rmse(val_y, gbm_pred)
 ```
 
+GBM model gives us a trainning rmse of 0.03569928. GBM trainning RMSE was the best RMSE from our model, so we will advance our study further using this model. 
+
 ***
 
 # Results
-```{r}
-results = tibble(
-  Modrl = c("Linear", "Ridge", "Lasso", "GBM"),
+
+```{r result table}
+trainning_results = tibble(
+  Models = c("Linear", "Ridge", "Lasso", "GBM"),
   "Validation RMSE" = c(linear_rmse, ridge_model_RMSE, lasso_rmse, gbm_RMSE )) %>%
   kable(digits = 3) %>%
   kable_styling("striped", full_width = FALSE)
+
+trainning_results
 ```
 
 ```{r test rmse, cache = TRUE}
@@ -295,6 +311,18 @@ final_model = train(trn_x, trn_y,
 final_pred = predict(final_model, tst_x)
 final_RMSE = calc_rmse(tst_y, final_pred)
 ```
+
+```{r final test rmse table}
+final_results = tibble(
+  Models = c("GBM with cross-validation"),
+  "Test RMSE" = c(final_RMSE)) %>%
+  kable(digits = 3) %>%
+  kable_styling("striped", full_width = FALSE)
+
+final_results
+```
+
+# Discussion
 
 [^1]: [Kaggle: Detailed NFL Play-by-Play Data 2009-2018](https://www.kaggle.com/maxhorowitz/nflplaybyplay2009to2016)
 
