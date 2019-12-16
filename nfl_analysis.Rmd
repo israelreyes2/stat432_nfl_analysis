@@ -68,8 +68,8 @@ library(glmnet)
 
 ```{r data loading, warning = FALSE}
 #/cloud/project/
-df_2018_first = read_csv("NFL_2018_first.csv") #first half data only
-df_2018_second = read_csv("NFL_2018_second.csv") #second half data only
+df_2018_first = read_csv("/cloud/project/NFL_2018_first.csv") #first half data only
+df_2018_second = read_csv("/cloud/project/NFL_2018_second.csv") #second half data only
 df_2018 = rbind(df_2018_first, df_2018_second) #combining them both
 ```
 
