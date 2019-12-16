@@ -185,6 +185,8 @@ calc_rmse = function(actual, predicted){
 ```
 
 ```{r linear modeling and stepwise, cache= TRUE}
+nfl_trn = na.omit(nfl_trn)
+nfl_tst = na.omit(nfl_tst)
 nfl_lm = lm(wpa ~., data = nfl_trn)
 lm_pred = predict(nfl_lm, nfl_trn)
 linear_rmse = calc_rmse(actual = nfl_trn$wpa, predicted = lm_pred)
@@ -192,8 +194,8 @@ linear_rmse = calc_rmse(actual = nfl_trn$wpa, predicted = lm_pred)
 train_control = trainControl(method = "cv", number  = 10)
 set.seed(42)
 nfl_step = train(wpa ~., data = nfl_trn, method = "leapBackward", 
-                 tuneGrid = data.frame(nvmax = 1:24),
-                 trControl = train_control, na.action = na.omit) 
+              tuneGrid = data.frame(nvmax = 1:24),
+              trControl = train_control, na.action = na.omit) 
 nfl_step$results
 nfl_step$bestTune
 ```
