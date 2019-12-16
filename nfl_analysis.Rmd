@@ -89,6 +89,7 @@ library(tidyverse)
 library(caret)
 library(rsample)
 library(glmnet)
+library(kableExtra)
 ```
 
 ```{r data loading, warning = FALSE}
@@ -180,40 +181,6 @@ calc_rmse = function(actual, predicted){
 }
 ```
 
-```{r ridge modeling, cache = TRUE}
-# Omitting random NAs in the data
-nfl_trn = na.omit(nfl_trn)
-nfl_tst = na.omit(nfl_tst)
-
-# Train data frame matrix
-trn_x = model.matrix(wpa ~ ., nfl_trn)[, -1]
-trn_y = nfl_trn %>%
-  select(wpa) %>%
-  unlist() %>%
-  as.numeric()
-
-# Test data frame matrix
-tst_x = model.matrix(wpa ~., nfl_tst)[, -1]
-tst_y = nfl_tst %>%
-  select(wpa) %>%
-  unlist() %>%
-  as.numeric()
-
-set.seed(42)
-# Using glmnet function to build the ridge regression model
-cv_fit = cv.glmnet(trn_x, trn_y, alpha = 0,  nfolds = 10)
-plot(cv_fit)
-
-# Best lambda value
-best_lambda = cv_fit$lambda.min
-
-# Calculating rmse 
-predicted = predict(cv_fit, tst_x)
-predicted = as.vector(predicted)
-ridge_model_RMSE = calc_rmse(tst_y, predicted)
-ridge_model_RMSE
-```
-
 ```{r lasso model}
 # Omitting random NAs in the data
 nfl_est = na.omit(nfl_est)
@@ -238,7 +205,21 @@ lasso_mod = cv.glmnet(est_x, est_y, alpha = 1)
 
 lasso_pred = predict(lasso_mod, val_x)
 lasso_rmse = calc_rmse(val_y, lasso_pred)
-lasso_rmse
+```
+
+```{r ridge modeling, cache = TRUE}
+set.seed(42)
+# Using glmnet function to build the ridge regression model
+ridge_mod = cv.glmnet(est_x, est_y, alpha = 0,  nfolds = 10)
+plot(ridge_mod)
+
+# Best lambda value
+best_lambda = ridge_mod$lambda.min
+
+# Calculating rmse 
+ridge_pred = predict(ridge_mod, val_x)
+ridge_pred = as.vector(ridge_pred)
+ridge_model_RMSE = calc_rmse(val_y, ridge_pred)
 ```
 
 ```{r cache = TRUE}
@@ -246,22 +227,58 @@ lasso_rmse
 cv = trainControl(method = "cv", number = 10)
 set.seed(42)
 #Train the data with gbm method and RMSE metric.
-gbm_model = train(trn_x, trn_y,
+gbm_model = train(est_x, est_y,
  method = "gbm", 
  metric = "RMSE",
  trControl = cv, verbose = FALSE)
 #Predict rmse of test dataset 
-gbm_pred = predict(gbm_model, tst_x)
-gbm_RMSE = calc_rmse(tst_y, gbm_pred)
-gbm_RMSE
+gbm_pred = predict(gbm_model, val_x)
+gbm_RMSE = calc_rmse(val_y, gbm_pred)
 ```
 
-
 ```{r}
-linear_model = lm(trn_y ~ trn_x)
-linear_pred = predict(linear_model, as.data.frame(tst_x))
-linear_rmse = calc_rmse(linear_pred, trn_y)
-linear_rmse
+linear_model = lm(est_y ~ est_x)
+linear_pred = predict(linear_model, as.data.frame(val_x))
+linear_rmse = calc_rmse(linear_pred, val_y)
+```
+
+# Results
+```{r}
+results = tibble(
+  Model = c("Lasso", "Ridge", "GBM", "Linear"),
+  "Validation RMSE" = c(lasso_rmse, ridge_model_RMSE, gbm_RMSE, linear_rmse)) %>%
+  kable(digits = 3) %>%
+  kable_styling("striped", full_width = FALSE)
+```
+
+```{r test rmse, cache = TRUE}
+# Omitting random NAs in the data
+nfl_trn = na.omit(nfl_trn)
+nfl_tst = na.omit(nfl_tst)
+
+# Train data frame matrix
+trn_x = model.matrix(wpa ~ ., nfl_trn)[, -1]
+trn_y = nfl_trn %>%
+  select(wpa) %>%
+  unlist() %>%
+  as.numeric()
+
+# Test data frame matrix
+tst_x = model.matrix(wpa ~., nfl_tst)[, -1]
+tst_y = nfl_tst %>%
+  select(wpa) %>%
+  unlist() %>%
+  as.numeric()
+
+# Best model
+set.seed(42)
+final_model = train(trn_x, trn_y,
+                  method = "gbm", 
+                  metric = "RMSE",
+                  trControl = cv, verbose = FALSE)
+
+final_pred = predict(final_model, tst_x)
+final_RMSE = calc_rmse(tst_y, final_pred)
 ```
 
 [^1]: [Kaggle: Detailed NFL Play-by-Play Data 2009-2018](https://www.kaggle.com/maxhorowitz/nflplaybyplay2009to2016)
