@@ -103,8 +103,8 @@ library(kableExtra)
 ```
 
 ```{r data loading, message = FALSE, warning=FALSE, echo = TRUE}
-df_2018_first = read_csv("/cloud/project/NFL_2018_first.csv") #first half data only
-df_2018_second = read_csv("/cloud/project/NFL_2018_second.csv") #second half data only
+df_2018_first = read_csv("NFL_2018_first.csv") #first half data only
+df_2018_second = read_csv("NFL_2018_second.csv") #second half data only
 
 #df_2018_first = read_csv("C:/Users/jekim3.UOFI.000.001.002/Desktop/NFL_2018_first.csv")
 #df_2018_second = read_csv("C:/Users/jekim3.UOFI.000.001.002/Desktop/NFL_2018_second.csv")
@@ -272,7 +272,7 @@ GBM model gives us a trainning rmse of 0.03569928. GBM trainning RMSE was the be
 
 # Results
 
-```{r result table}
+```{r result table, echo = FALSE}
 trainning_results = tibble(
   Models = c("Linear", "Ridge", "Lasso", "GBM"),
   "Validation RMSE" = c(linear_rmse, ridge_model_RMSE, lasso_rmse, gbm_RMSE )) %>%
@@ -282,7 +282,7 @@ trainning_results = tibble(
 trainning_results
 ```
 
-```{r test rmse, cache = TRUE}
+```{r test rmse, cache = TRUE, include = FALSE}
 # Omitting random NAs in the data
 nfl_trn = na.omit(nfl_trn)
 nfl_tst = na.omit(nfl_tst)
@@ -312,7 +312,7 @@ final_pred = predict(final_model, tst_x)
 final_RMSE = calc_rmse(tst_y, final_pred)
 ```
 
-```{r final test rmse table}
+```{r final test rmse table, echo = FALSE}
 final_results = tibble(
   Models = c("GBM with cross-validation"),
   "Test RMSE" = c(final_RMSE)) %>%
@@ -323,6 +323,38 @@ final_results
 ```
 
 # Discussion
+
+# Appendix
+
+## Data Dictionary
+```{r, include = FALSE}
+names(nfl_trn)
+```
+
+- `posteam` - The team on offense
+- `defteam` - The team on defense
+- `yardline_100` - Numeric distance in the number of yards from the opponent's endzone for the posteam
+- `game_date` - Date of the game
+- `game_seconds_remaining` -Numeric seconds remaining in the game 
+- `qtr` - Quarter of the game (5 is overtime)
+- `down` - The down for the given play
+- `ydstogo` - Numeric yards in distance from either the first down marker or the endzone in goal down situations
+- `play_type` - Type of play: pass (includes sacks), run (includes scrambles), punt, field_goal, kickoff, extra_point, qb_kneel, qb_spike, no_play (timeouts and penalties), and missing for rows indicating end of play.
+- `shotgun` - Whether or not the play was in shotgun formation
+- `no_huddle` - Whether or not the play was in no_huddle formation
+- `qb_dropback` - Whether or not the QB dropped back on the play (pass attempt, sack, or scrambled)
+- `pass_location` - String indicator for pass location: left, middle, or right
+- `yards_gained` - Yards gained (or lost) for the given play
+- `pass_length` - Pass length: short or deep
+- `air_yards` - Distance in yards perpendicular to the line of scrimmage at where the targeted receiver either caught or didn't catch the ball
+- `yards_after_catch` - Distance in yards perpendicular to the yard line where the receiver made the reception to where the play ended
+- `run_location` - Location of run: left, middle, or right
+- `run_gap` - Line gap of run: end, guard, or tackle
+- `field_goal_result` - Result of field goal attempt: made, missed, or blocked
+- `kick_distance` - Distance in yards for kickoffs, field goals, and punts
+- `posteam_timeouts_remaining` - Number of timeouts remaining for the possession team
+- `defteam_timeouts_remaining` - Number of timeouts remaining for the team on defense
+- `wpa` - The win probability added with respect to the possession team
 
 [^1]: [Kaggle: Detailed NFL Play-by-Play Data 2009-2018](https://www.kaggle.com/maxhorowitz/nflplaybyplay2009to2016)
 
