@@ -157,7 +157,7 @@ factor_list = c("posteam", "defteam", "play_type", "pass_location", "pass_length
 df_2018_cleaned[factor_list] <- lapply(df_2018_cleaned[factor_list], factor)
 ```
 
-# Training Testing Data Split
+# Data Split
 ```{r data split}
 set.seed(1)
 
@@ -165,6 +165,11 @@ set.seed(1)
 nfl_tst_trn_split = initial_split(df_2018_cleaned, prop = 0.80)
 nfl_trn = training(nfl_tst_trn_split)
 nfl_tst = testing(nfl_tst_trn_split)
+
+# estimation-validation split
+nfl_est_val_split = initial_split(nfl_trn, prop = 0.80)
+nfl_est = training(nfl_est_val_split)
+nfl_val = testing(nfl_est_val_split)
 ```
 
 # Data Modeling 
