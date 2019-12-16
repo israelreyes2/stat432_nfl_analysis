@@ -103,12 +103,12 @@ library(kableExtra)
 ```
 
 ```{r data loading, message = FALSE, warning=FALSE, echo = TRUE}
-#df_2018_first = read_csv("/cloud/project/NFL_2018_first.csv") #first half data only
+df_2018_first = read_csv("/cloud/project/NFL_2018_first.csv") #first half data only
+df_2018_second = read_csv("/cloud/project/NFL_2018_second.csv") #second half data only
 
-df_2018_first = read_csv("C:/Users/jekim3.UOFI.000.001.002/Desktop/NFL_2018_first.csv")
-df_2018_second = read_csv("C:/Users/jekim3.UOFI.000.001.002/Desktop/NFL_2018_second.csv")
+#df_2018_first = read_csv("C:/Users/jekim3.UOFI.000.001.002/Desktop/NFL_2018_first.csv")
+#df_2018_second = read_csv("C:/Users/jekim3.UOFI.000.001.002/Desktop/NFL_2018_second.csv")
 
-#df_2018_second = read_csv("/cloud/project/NFL_2018_second.csv") #second half data only
 df_2018 = rbind(df_2018_first, df_2018_second) #combining them both
 ```
 
