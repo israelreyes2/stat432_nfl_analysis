@@ -214,6 +214,33 @@ ridge_model_RMSE = calc_rmse(tst_y, predicted)
 ridge_model_RMSE
 ```
 
+```{r lasso model}
+# Omitting random NAs in the data
+nfl_est = na.omit(nfl_est)
+nfl_val = na.omit(nfl_val)
+
+# Estimation data frame matrix
+est_x = model.matrix(wpa ~ ., nfl_est)[, -1]
+est_y = nfl_est %>%
+  select(wpa) %>%
+  unlist() %>%
+  as.numeric()
+
+# Validation data frame matrix
+val_x = model.matrix(wpa ~., nfl_val)[, -1]
+val_y = nfl_val %>%
+  select(wpa) %>%
+  unlist() %>%
+  as.numeric()
+
+set.seed(2)
+lasso_mod = cv.glmnet(est_x, est_y, alpha = 1)
+
+lasso_pred = predict(lasso_mod, val_x)
+lasso_rmse = calc_rmse(val_y, lasso_pred)
+lasso_rmse
+```
+
 ```{r cache = TRUE}
 #Use cross validation with 5folds
 cv = trainControl(method = "cv", number = 10)
