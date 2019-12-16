@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
 
 <meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -12,7 +13,7 @@
 <meta name="author" content="Eric Jong Bum Kim (jekim3)" />
 <meta name="author" content="Israel Reyes (ir2)" />
 <meta name="author" content="Jihee Hwang (jhwang55)" />
-<meta name="author" content="Hyun Suk Lee ()" />
+<meta name="author" content="Hyun Suk Lee(hyunsuk3)" />
 
 
 <title>Down By 4, 2nd And Goal, 26 Seconds To Go, What Play Are YOU Calling?</title>
@@ -343,7 +344,6 @@ summary {
   border: none;
   display: inline-block;
   border-radius: 4px;
-  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -380,8 +380,8 @@ summary {
 <h4 class="author">Eric Jong Bum Kim (jekim3)</h4>
 <h4 class="author">Israel Reyes (ir2)</h4>
 <h4 class="author">Jihee Hwang (jhwang55)</h4>
-<h4 class="author">Hyun Suk Lee ()</h4>
-<h4 class="date">15 December, 2019</h4>
+<h4 class="author">Hyun Suk Lee(hyunsuk3)</h4>
+<h4 class="date">15 12월, 2019</h4>
 <div class="abstract">
 <p class="abstract">Abstract</p>
 Coming Soon
@@ -393,9 +393,9 @@ Coming Soon
 <div style="page-break-after: always;"></div>
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
-<p>NFL is one of the most-loved professional sport league in the United States. NFL is undoubtedly the top sport league in the United States bringing in over $13 billion in revenue each year. With that, each and every player on a team is under tremendous pressure to perform under the spot light. Let’s look at the other important piece of NFL games, the coaches. Some say that football is a chess game, which head coaches are the players of the game, and NFL players are pieces which head coaches move to win the game. With that, every head coach’s goals to call plays which will give them any sort of edge over their opponent. American football is quite different from other sports since after each play, game stops. After each play, coaches tell their players to run a play which will allow them to score. Head coaches call plays based on combination of experiences, time on clock, field positions, their team’s best players, and more. What if, like other sports, analytic can call plays?</p>
-<p>In Super Bowl XLIX (Seattle Seahawks vs. New England Patriots), at the last second of the game, one of the most questionable play call was made by Seattle Seahawks and their head coach, Pete Caroll. Down by 4 and on 2nd and goal with 26 seconds to go, Pete Caroll decided to throw the ball instead of running the ball. In context of the game, Seattle Seahawks had one of the most dominant running back in the game, Marshawn Lynch, but they decided to throw the ball resulting in interception. Many questioned, why would Seahawks pass the ball at that point of the game? This play still hurts Seahawks fans till now today. With that, did Pete Caroll and Seattle Seahawks believe that passing play would have resulted in increasing the probability of the winning game more than running game? With this case as a motivation, we will conduct our study.</p>
-<p>In an attempt to construct meaningful and effective ways for coaches to call what type of play purely rely on analytic probability, various statistical learning techniques will be applied to the NFL play-by-play data. The main goal of our study is to see if football-game related measures such as game clock situation, position on the field, and players on the field at the moment can increase the chance of winning the most for the team. In NFL, there is a measure called, winning percentage. Winning percentage measures probability of a team winning at the given moment of the game, and since football game stop after each play, winning percentage changes after each play. Can we possibly decide which play will increase team’s chance of winning according to game-related status? Our model will focus only on the offensive side of the ball. Ultimately, we will utilize statistical learning techniques for offensive coordinator to call plays based on analytic.</p>
+<p>NFL is one of the most-loved professional sports leagues in the United States. NFL is undoubtedly the top sports league in the United States bringing in over $13 billion in revenue each year. With that, each and every player on a team is under tremendous pressure to perform under the spotlight. Let’s look at the other important piece of NFL games, the coaches. Some say that football is a chess game, which head coaches are the players of the game, and NFL players are pieces that head coaches move to win the game. With that, every head coach’s goals to call plays which will give them any sort of edge over their opponent. American football is quite different from other sports since, after each play, the game stops. After each play, coaches tell their players to run a play which will allow them to score. Head coaches call plays based on a combination of experiences, time on the clock, field positions, their team’s best players, and more. What if, like other sports, analytic can call plays?</p>
+<p>In Super Bowl XLIX (Seattle Seahawks vs. New England Patriots), at the last second of the game, one of the most questionable plays calls were made by Seattle Seahawks and their head coach, Pete Caroll. Down by 4 and on 2nd and goal with 26 seconds to go, Pete Caroll decided to throw the ball instead of running the ball. In the context of the game, Seattle Seahawks had one of the most dominant running back in the game, Marshawn Lynch, but they decided to throw the ball resulting in an interception. Many questioned, why would Seahawks pass the ball at that point in the game? This play still hurts Seahawks fans till now today. With that, did Pete Caroll and Seattle Seahawks believe that passing play would have resulted in increasing the probability of the winning game more than a running game? With this case as a motivation, we will conduct our study.</p>
+<p>In an attempt to construct meaningful and effective ways for coaches to call what type of play purely rely on analytic probability, various statistical learning techniques will be applied to the NFL play-by-play data. The main goal of our study is to see if football-game related measures such as game clock situation, position on the field, and players on the field at the moment can increase the chance of winning the most for the team. In NFL, there is a measure called, winning percentage. Winning percentage measures the probability of a team winning at the given moment of the game, and since football game stop after each play, winning percentage changes after each play. Can we possibly decide which play will increase the team’s chance of winning according to game-related status? Our model will focus only on the offensive side of the ball. Ultimately, we will utilize statistical learning techniques for an offensive coordinator to call plays based on analytic.</p>
 </div>
 <div id="background-information-on-data" class="section level1">
 <h1>Background Information On Data</h1>
@@ -407,8 +407,7 @@ Coming Soon
 <p>The NFL data for each season contains 257 different variables in attempt to explain every play of the game in every game of the season. Each and every play of the game is broken down into great detail containing information on game situation, players involved, results, and advanced football analytic metrics. Here are few variables correlating to these.</p>
 <ul>
 <li>Game situation : <em>Posteam</em>, <em>Defteam</em>, <em>Game_date</em></li>
-<li>Players Involved : <em>passer_player_name</em>, <em>receiver_player_name</em>, <em>rusher_player_name</em>, <em>punter_player_name</em>, <em>kicker_player_name</em></li>
-<li>results : <em>yrd_gained</em></li>
+<li>Play results : <em>yrd_gained</em>, <em>yrd_after_catch</em></li>
 <li>advanced analytic : <em>wpa</em></li>
 </ul>
 <p>To further explain WPA, WPA stands for win probability added. The difference between the team’s win probability at the beginning of the play and at the end of the play. WPA measures each play’s impact on the outcome of a game. WPA takes encounter of players who were directly involved in the play. For offensive team - players who ran, threw, kicker, received, or flagged for penalty- and for defensive team - players who tacked, sacked the ball carrier, caused a fumble, defended a pass, or flagged for penalty are considered. For purpose of our study, we will only focus on the offensive plays of a team.</p>
@@ -429,13 +428,12 @@ Coming Soon
 </div>
 <div id="statistical-learning-task" class="section level1">
 <h1>Statistical Learning Task</h1>
-<p>That being said, the statistical learning task to accomplish this goal will be with the means of classification models. Given certain features of the data set like the geographical location, the length of the trip, cost and many others we will be classifying the company that corresponding trip applies to. It is immediately apparent that binary classification models are out of the question unless we would like to target a specific company to make it the positive class meanwhile the others are grouped into another classification. The problem with this however is that could potentially make the data set uneven and although there are methods to combat this problem, we would have to model depending how many unique companies are in the data set. Multi-class classification would have to be the main method for our goal with use of K-Nearest Neighbors and Random Forests along with cross validation, where we will be using 2 metrics to maximize being accuracy and sensitivity.</p>
+<p>We will use statistical learning methods to predict WPA from multiple factors. There are various features like a defending team, attacking team, play type, run_gaptackle, etc. which are all related to the gameplay. However, we only included past game history because we will predict the WPA of the future based on the past record. We will use three methods on this project: ridge-regression, GBM, and simple linear regressions. The problem is how to choose useful factors while we train the data. Ridge regression may give us answer to select useful factors. Also, we will use “RMSE” as a metric.</p>
 </div>
 <div id="data-loading" class="section level1">
 <h1>Data Loading</h1>
-<pre class="r"><code>#For now, we will only conisder using 2018 season data only.
-
-df_2018_first = read_csv(&quot;/cloud/project/NFL_2018_first.csv&quot;)</code></pre>
+<pre class="r"><code>#/cloud/project/
+df_2018_first = read_csv(&quot;NFL_2018_first.csv&quot;) #first half data only</code></pre>
 <pre><code>## Parsed with column specification:
 ## cols(
 ##   .default = col_double(),
@@ -462,7 +460,7 @@ df_2018_first = read_csv(&quot;/cloud/project/NFL_2018_first.csv&quot;)</code></
 ##   # ... with 88 more columns
 ## )</code></pre>
 <pre><code>## See spec(...) for full column specifications.</code></pre>
-<pre class="r"><code>df_2018_second = read_csv(&quot;/cloud/project/NFL_2018_second.csv&quot;)</code></pre>
+<pre class="r"><code>df_2018_second = read_csv(&quot;NFL_2018_second.csv&quot;) #second half data only</code></pre>
 <pre><code>## Parsed with column specification:
 ## cols(
 ##   .default = col_double(),
@@ -489,7 +487,7 @@ df_2018_first = read_csv(&quot;/cloud/project/NFL_2018_first.csv&quot;)</code></
 ##   # ... with 87 more columns
 ## )
 ## See spec(...) for full column specifications.</code></pre>
-<pre class="r"><code>df_2018 = rbind(df_2018_first, df_2018_second)</code></pre>
+<pre class="r"><code>df_2018 = rbind(df_2018_first, df_2018_second) #combining them both</code></pre>
 <div id="data-cleaning-1" class="section level2">
 <h2>Data Cleaning</h2>
 <pre class="r"><code>keep = c(&quot;posteam&quot;, &quot;defteam&quot;, &quot;yardline_100&quot;, &quot;game_date&quot;, &quot;game_seconds_remaining&quot;, &quot;qtr&quot;, &quot;down&quot;, &quot;ydstogo&quot;, #game administravtive variables
@@ -498,11 +496,7 @@ df_2018_first = read_csv(&quot;/cloud/project/NFL_2018_first.csv&quot;)</code></
          &quot;run_location&quot;, &quot;run_gap&quot;, #offensive run plays
          &quot;field_goal_result&quot;, &quot;kick_distance&quot;, #speical teams
          &quot;posteam_timeouts_remaining&quot;, &quot;defteam_timeouts_remaining&quot;, #time out remainings
-         &quot;wpa&quot;, #responce variables
-         &quot;passer_player_name&quot;, &quot;receiver_player_name&quot;, &quot;rusher_player_name&quot;, &quot;punter_player_name&quot;, &quot;kicker_player_name&quot; #Offensive focal point player's name
-         )
-
-#These are variables that I might thought it would be useful for us to limit down to, feel free to add any as needed
+         &quot;wpa&quot;) #responce variables
 
 df_2018_reduced = subset(df_2018, select = keep)</code></pre>
 <pre class="r"><code>#no_play = subset(df_2018, df_2018$play_type == &quot;no_play&quot;)
@@ -515,384 +509,86 @@ df_2018_reduced_no_admin_plays = df_2018_reduced[complete.cases(df_2018_reduced[
 <pre class="r"><code>df_2018_reduced_no_kick_off = df_2018_reduced_no_qb_kneels %&gt;%
   subset(game_seconds_remaining != 3600 &amp; play_type != &quot;kickoff&quot;) #37641 rows</code></pre>
 <pre class="r"><code>df_2018_cleaned = df_2018_reduced_no_kick_off[complete.cases(df_2018_reduced_no_kick_off[ , &quot;wpa&quot;]),]</code></pre>
-<pre class="r"><code>factor_list = c(&quot;posteam&quot;, &quot;defteam&quot;, &quot;play_type&quot; ,&quot;passer_player_name&quot;,&quot;receiver_player_name&quot;, &quot;rusher_player_name&quot;, &quot;punter_player_name&quot;, &quot;kicker_player_name&quot;)
+<pre class="r"><code>df_2018_cleaned$air_yards[is.na(df_2018_cleaned$air_yards)] = 0
+df_2018_cleaned$yards_after_catch[is.na(df_2018_cleaned$yards_after_catch)] = 0
+df_2018_cleaned$kick_distance[is.na(df_2018_cleaned$kick_distance)] = 0</code></pre>
+<pre class="r"><code>df_2018_cleaned$pass_location[is.na(df_2018_cleaned$pass_location)] = &quot;NA&quot;
+df_2018_cleaned$run_location[is.na(df_2018_cleaned$run_location)] = &quot;NA&quot;
+df_2018_cleaned$run_gap[is.na(df_2018_cleaned$run_gap)] = &quot;NA&quot;
+df_2018_cleaned$field_goal_result[is.na(df_2018_cleaned$field_goal_result)] = &quot;NA&quot;
+df_2018_cleaned$pass_length[is.na(df_2018_cleaned$pass_length)] = &quot;NA&quot;</code></pre>
+<pre class="r"><code>factor_list = c(&quot;posteam&quot;, &quot;defteam&quot;, &quot;play_type&quot;, &quot;pass_location&quot;, &quot;pass_length&quot;, &quot;run_location&quot;, &quot;run_gap&quot;, &quot;field_goal_result&quot;)
 
 df_2018_cleaned[factor_list] &lt;- lapply(df_2018_cleaned[factor_list], factor)</code></pre>
-<pre class="r"><code>df_2018_cleaned$air_yards[is.na(df_2018_cleaned$air_yards)] = 0
-df_2018_cleaned$yards_after_catch[is.na(df_2018_cleaned$yards_after_catch)] = 0</code></pre>
-<pre class="r"><code>head(df_2018_cleaned)</code></pre>
-<pre><code>## # A tibble: 6 x 29
-##   posteam defteam yardline_100 game_date  game_seconds_re…   qtr  down ydstogo
-##   &lt;fct&gt;   &lt;fct&gt;          &lt;dbl&gt; &lt;date&gt;                &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;
-## 1 ATL     PHI               70 2018-09-06             3562     1     2       5
-## 2 ATL     PHI               59 2018-09-06             3526     1     1      10
-## 3 ATL     PHI               39 2018-09-06             3490     1     1      10
-## 4 ATL     PHI               39 2018-09-06             3485     1     2      10
-## 5 ATL     PHI               39 2018-09-06             3481     1     3      10
-## 6 ATL     PHI                6 2018-09-06             3435     1     1       6
-## # … with 21 more variables: play_type &lt;fct&gt;, shotgun &lt;dbl&gt;, no_huddle &lt;dbl&gt;,
-## #   qb_dropback &lt;dbl&gt;, pass_location &lt;chr&gt;, yards_gained &lt;dbl&gt;,
-## #   pass_length &lt;chr&gt;, air_yards &lt;dbl&gt;, yards_after_catch &lt;dbl&gt;,
-## #   run_location &lt;chr&gt;, run_gap &lt;chr&gt;, field_goal_result &lt;chr&gt;,
-## #   kick_distance &lt;dbl&gt;, posteam_timeouts_remaining &lt;dbl&gt;,
-## #   defteam_timeouts_remaining &lt;dbl&gt;, wpa &lt;dbl&gt;, passer_player_name &lt;fct&gt;,
-## #   receiver_player_name &lt;fct&gt;, rusher_player_name &lt;fct&gt;,
-## #   punter_player_name &lt;fct&gt;, kicker_player_name &lt;fct&gt;</code></pre>
-<pre class="r"><code>unique(df_2018_cleaned$pass_length)</code></pre>
-<pre><code>## [1] NA      &quot;short&quot; &quot;deep&quot;</code></pre>
-<pre class="r"><code>unique(df_2018_cleaned$pass_location)</code></pre>
-<pre><code>## [1] NA       &quot;right&quot;  &quot;left&quot;   &quot;middle&quot;</code></pre>
-<pre class="r"><code>unique(df_2018_cleaned$run_gap)</code></pre>
-<pre><code>## [1] &quot;end&quot;    NA       &quot;guard&quot;  &quot;tackle&quot;</code></pre>
-<pre class="r"><code>unique(df_2018_cleaned$field_goal_result)</code></pre>
-<pre><code>## [1] NA        &quot;made&quot;    &quot;missed&quot;  &quot;blocked&quot;</code></pre>
-<pre class="r"><code>unique(df_2018_cleaned$kick_distance)</code></pre>
-<pre><code>##  [1] NA 56 21 49 26 52 58 57 33 46 63 51 41 50 44 39 48 27 31 36 45 40 37 42 47
-## [26] 30 34 55 38 43 24 60 59 35 62 20 54 53 28 29 32 10 25  3 70 23 61 22 68  5
-## [51] 19 69 79 64 65  2 72 67 66 17 18  8</code></pre>
-<pre class="r"><code>unique(df_2018_cleaned$passer_player_name)</code></pre>
-<pre><code>##  [1] &lt;NA&gt;             M.Ryan           N.Foles          J.Flacco        
-##  [5] N.Peterman       L.Jackson        B.Bortles        E.Manning       
-##  [9] D.Brees          R.Fitzpatrick    T.Brady          D.Watson        
-## [13] K.Cousins        J.Garoppolo      M.Mariota        R.Tannehill     
-## [17] A.Dalton         A.Luck           B.Roethlisberger T.Taylor        
-## [21] P.Rivers         P.Mahomes        C.Keenum         R.Wilson        
-## [25] C.Newton         D.Prescott       A.Smith          S.Bradford      
-## [29] A.Rodgers        M.Trubisky       D.Kizer          S.Darnold       
-## [33] M.Stafford       D.Carr           J.Goff           B.Gabbert       
-## [37] K.Byard          D.Henry          J.Allen          B.Mayfield      
-## [41] C.Wentz          K.Allen          J.Rosen          T.Hill          
-## [45] C.Beathard       C.Bojorquez      O.Beckham        J.Winston       
-## [49] D.Hopkins        B.Osweiler       E.Sanders        D.Anderson      
-## [53] T.Heinicke       J.Hekker         N.Mullens        B.Anger         
-## [57] D.Hilliard       J.McCown         M.Barkley        L.Thomas        
-## [61] E.Ebron          C.Wadman         C.Daniel         C.McCoy         
-## [65] J.Brissett       A.Brown          C.Boswell        S.Koch          
-## [69] C.Kessler        J.Driskel        M.Sanchez        Z.Jones         
-## [73] J.Landry         S.Martin         J.Johnson        C.McCaffrey     
-## [77] N.Agholor        M.Cassel         A.Wilson         M.Schaub        
-## [81] G.Smith          D.Amendola       A.McCarron       J.Dobbs         
-## [85] J.Edelman        C.Beasley        T.Bridgewater    D.Jennings      
-## [89] B.Hoyer          L.Cooke          T.Boyd           A.Miller        
-## [93] M.Sanu           R.Griffin III    T.Cohen          B.Ellington     
-## [97] K.Lauletta       M.Glennon       
-## 97 Levels: A.Brown A.Dalton A.Luck A.McCarron A.Miller A.Rodgers ... Z.Jones</code></pre>
-<pre class="r"><code>unique(df_2018_cleaned$receiver_player_name)</code></pre>
-<pre><code>##   [1] &lt;NA&gt;               C.Ridley           D.Freeman         
-##   [4] J.Jones            N.Agholor          D.Sproles         
-##   [7] M.Sanu             T.Coleman          A.Hooper          
-##  [10] D.Carter           D.Goedert          Z.Ertz            
-##  [13] M.Wallace          N.Boyle            J.Brown           
-##  [16] M.Crabtree         M.Andrews          L.McCoy           
-##  [19] W.Snead            J.Kerley           K.Benjamin        
-##  [22] J.Allen            M.Williams         Z.Jones           
-##  [25] C.Moore            M.Murphy           K.Cole            
-##  [28] D.Westbrook        T.Yeldon           D.Moncrief        
-##  [31] R.Ellison          L.Fournette        O.Beckham         
-##  [34] A.Seferian-Jenkins N.Paul             W.Gallman         
-##  [37] S.Shepard          T.Ginn             A.Kamara          
-##  [40] M.Thomas           D.Jackson          T.Smith           
-##  [43] B.Watson           C.Brate            C.Godwin          
-##  [46] M.Evans            O.Howard           Z.Line            
-##  [49] A.Humphries        J.Rodgers          R.Burkhead        
-##  [52] R.Gronkowski       J.Akins            R.Griffin         
-##  [55] J.Develin          C.Patterson        J.White           
-##  [58] J.Thomas           D.Hopkins          B.Ellington       
-##  [61] S.Coates           P.Dorsett          J.Hill            
-##  [64] C.Hogan            R.McCarron         V.Smith           
-##  [67] T.Ervin            D.Cook             A.Thielen         
-##  [70] P.Garcon           M.Goodwin          G.Kittle          
-##  [73] S.Diggs            L.Treadwell        T.Taylor          
-##  [76] D.Pettis           C.Ham              D.Walker          
-##  [79] C.Davis            D.Amendola         T.Sharpe          
-##  [82] D.Henry            L.Stocker          A.Wilson          
-##  [85] K.Drake            J.Grant            K.Stills          
-##  [88] D.Lewis            J.Mixon            J.Doyle           
-##  [91] T.Eifert           A.Green            J.Ross            
-##  [94] T.Boyd             R.Grant            C.Rogers          
-##  [97] E.Ebron            J.Wilkins          T.Kroft           
-## [100] T.Hilton           G.Bernard          N.Hines           
-## [103] E.Swoope           C.Uzomah           J.Conner          
-## [106] A.Brown            D.Njoku            J.Landry          
-## [109] R.Switzer          J.Smith-Schuster   C.Hyde            
-## [112] D.Johnson          J.Hunter           J.James           
-## [115] D.Fells            K.Allen            Ty.Williams       
-## [118] S.Watkins          T.Kelce            T.Hill            
-## [121] A.Ekeler           M.Gordon           D.Thomas          
-## [124] T.Benjamin         V.Green            S.Ware            
-## [127] De.Thomas          E.Sanders          M.LaCosse         
-## [130] W.Dissly           C.Sutton           P.Lindsay         
-## [133] T.Lockett          T.Patrick          D.Baldwin         
-## [136] B.Marshall         J.Butt             R.Penny           
-## [139] D.Moore            J.Heuerman         D.Booker          
-## [142] C.Carson           C.McCaffrey        I.Thomas          
-## [145] T.Williams         C.Beasley          G.Swaim           
-## [148] G.Olsen            D.Funchess         J.Wright          
-## [151] R.Smith            A.Hurns            M.Gallup          
-## [154] B.Jarwin           J.Reed             C.Thompson        
-## [157] P.Richardson       C.Williams         C.Kirk            
-## [160] V.Davis            J.Crowder          L.Fitzgerald      
-## [163] R.Seals-Jones      A.Peterson         J.Williams        
-## [166] R.Cobb             T.Cohen            T.Gabriel         
-## [169] T.Burton           J.Graham           A.Robinson II     
-## [172] J.Howard           D.Adams            D.Sims            
-## [175] G.Allison          T.Montgomery       B.Powell          
-## [178] Q.Enunwa           N.Sterling         E.Tomlinson       
-## [181] K.Golladay         G.Tate             T.Riddick         
-## [184] M.Jones            K.Johnson          T.Jones           
-## [187] R.Anderson         J.Cook             M.Lynch           
-## [190] B.Cooks            D.Martin           J.Nelson          
-## [193] C.Kupp             R.Woods            T.Gurley          
-## [196] D.Carrier          S.Roberts          J.Richard         
-## [199] A.Cooper           W.Snead IV         A.Collins         
-## [202] M.Hall             I.Smith            M.Mack            
-## [205] J.Doctson          R.Hewitt           W.Fuller          
-## [208] D.Cruikshank       L.Miller           R.Matthews        
-## [211] K.Aiken            P.Barber           C.Clement         
-## [214] S.Gibson           J.Perkins          J.Washington      
-## [217] V.McDonald         C.Conley           K.Hunt            
-## [220] I.Crowell          T.Pryor            A.Derby           
-## [223] J.Kearse           C.Herndon          R.Foster          
-## [226] J.Croom            A.Holmes           C.Clay            
-## [229] D.Morgan           K.Rudolph          M.Valdes-Scantling
-## [232] R.Higgins          M.Breida           K.Juszczyk        
-## [235] A.Morris           L.Blount           J.Hollister       
-## [238] C.Grant            S.Michel           J.O'Shaughnessy   
-## [241] D.Chark            K.Smith            R.Freeman         
-## [244] M.Bryant           T.Austin           S.Barkley         
-## [247] D.Thompson         E.Elliott          E.Engram          
-## [250] R.Gathers          A.Miller           N.Vannett         
-## [253] A.Callaway         A.Carr             R.Kelly           
-## [256] J.Matthews         W.Smallwood        Z.Pascal          
-## [259] C.Ivory            L.Murray           D.Parker          
-## [262] M.Gesicki          D.Harris           L.Jackson         
-## [265] C.Anderson         C.Latimer          J.Smith           
-## [268] T.Bohanon          A.Sherman          D.Robinson        
-## [271] K.Bourne           Dam. Williams      T.Higbee          
-## [274] A.Gates            G.Everett          M.Davis           
-## [277] B.Cunningham       J.Gresham          L.Willson         
-## [280] X.Grimble          A.Robinson         J.Leggett         
-## [283] J.Gordon           D.Smythe           F.Gore            
-## [286] D.Allen            J.Ajayi            A.Jeffery         
-## [289] M.Johnson          K.Coutee           M.Alie-Cox        
-## [292] A.Jones            L.Kendricks        L.Toilolo         
-## [295] J.Wims             A.Auclair          R.Jones           
-## [298] J.Bellamy          J.Hardy            M.Walton          
-## [301] L.Paulsen          L.Smith            O.Charles         
-## [304] C.Meredith         R.Shepard          M.Gillislee       
-## [307] J.Hardee           S.Simonson         J.Edelman         
-## [310] N.Williams         S.Hauschka         R.Ortiz           
-## [313] D.Hamilton         E.St. Brown        H.Hurst           
-## [316] S.DeValve          C.Samuel           J.Davis           
-## [319] A.Erickson         V.Bolden           R.Mostert         
-## [322] C.Edmonds          R.Thomas           A.Blue            
-## [325] M.Ingram           M.Harris           K.Bibbs           
-## [328] C.Manhertz         S.Perine           T.Swoopes         
-## [331] R.Turbin           K.Cousins          R.Nix             
-## [334] B.Roethlisberger   C.Core             D.Ratley          
-## [337] R.McCloud          L.Thomas           N.O'Leary         
-## [340] J.Reynolds         A.Firkser          J.Charles         
-## [343] J.Olawale          C.Batson           D.Grinnage        
-## [346] A.Roberts          T.Cannon           M.Boone           
-## [349] B.Sowell           N.Chubb            B.Perriman        
-## [352] M.Roberts          D.Arnold           B.Butler          
-## [355] D.Schultz          M.Floyd            M.Brown           
-## [358] M.Lengel           C.Wentz            S.Ridley          
-## [361] B.Fowler           E.Dickson          J.Franks          
-## [364] R.Jones II         D.Burnett          K.White           
-## [367] D.Inman            B.LaFell           R.Tonyan          
-## [370] S.Shields          P.DiMarco          R.Dwelley         
-## [373] R.James            T.Mizzell          A.Cross           
-## [376] K.Ballage          E.McGuire          C.Beebe           
-## [379] A.Janovich         D.Jennings         J.Samuels         
-## [382] K.Kirkwood         D.Hilliard         B.Mayfield        
-## [385] B.Braunecker       M.Kemp             T.Logan           
-## [388] S.Wilson           J.Sprinkle         D.Dawkins         
-## [391] C.Peake            E.Penny            S.Pulley          
-## [394] C.Coleman          A.Tate             T.Quinn           
-## [397] A.Luck             T.Sherfield        M.Ateman          
-## [400] J.Adams            N.Bellore          N.Brown           
-## [403] T.Lewis            B.Bell             D.Washington      
-## [406] K.Hatcher          M.Turner           T.Madden          
-## [409] D.Coleman          S.Culkin           L.Carroo          
-## [412] B.Parker           A.Villanueva       M.Lewis           
-## [415] R.Gage             K.Dixon            A.Shaheen         
-## [418] I.Ford             I.McKenzie         G.Dieter          
-## [421] M.Pruitt           J.Wilson           B.Wilson          
-## [424] J.Webb             G.Celek            J.Staley          
-## [427] J.Jackson          Dar.Williams       D.Newsome         
-## [430] S.Hubbard          D.Waller           T.Conklin         
-## [433] E.Rogers           N.Foles            E.Saubert         
-## [436] F.Martino          M.Burton           H.Valles          
-## [439] J.Malone           J.Chesson          S.Coley           
-## [442] C.Prosise          K.Lee              T.White           
-## [445] D.Turner           M.Schaub           D.Willies         
-## [448] C.Wick             D.Daniels          K.Hodge           
-## [451] B.Quick            D.Brees            J.Moore           
-## [454] R.Greene           D.Byrd             B.Zylstra         
-## [457] A.Abdullah         J.Watson           G.Edwards         
-## [460] C.Phillips         D.Prescott         D.Heyward-Bey     
-## [463] T.Brady            M.Mariota          J.Lewis           
-## [466] R.Wilson           C.Daniel           Z.Zenner          
-## [469] J.Holton           G.Davis            T.Decker          
-## [472] P.Cooper           J.Kumerow          J.McKissic        
-## [475] B.Bolden           D.Watt             J.Tolliver        
-## [478] G.Fant             K.Ford             D.Carr            
-## 479 Levels: A.Abdullah A.Auclair A.Blue A.Brown A.Callaway A.Carr ... Z.Zenner</code></pre>
-<pre class="r"><code>unique(df_2018_cleaned$rusher_player_name)</code></pre>
-<pre><code>##   [1] J.Jones            D.Freeman          &lt;NA&gt;              
-##   [4] D.Sproles          T.Coleman          M.Ryan            
-##   [7] C.Clement          J.Ajayi            J.Flacco          
-##  [10] L.Jackson          A.Collins          L.McCoy           
-##  [13] J.Brown            M.Murphy           J.Allen           
-##  [16] N.Peterman         L.Fournette        C.Grant           
-##  [19] S.Barkley          O.Beckham          B.Bortles         
-##  [22] T.Yeldon           T.Ginn             A.Kamara          
-##  [25] P.Barber           R.Fitzpatrick      M.Gillislee       
-##  [28] J.Williams         J.Rodgers          J.White           
-##  [31] D.Watson           C.Patterson        L.Miller          
-##  [34] R.Burkhead         T.Brady            A.Blue            
-##  [37] J.Hill             D.Cook             K.Cousins         
-##  [40] M.Breida           A.Morris           L.Murray          
-##  [43] S.Diggs            D.Henry            K.Drake           
-##  [46] M.Mariota          F.Gore             A.Wilson          
-##  [49] D.Lewis            R.Tannehill        J.Mixon           
-##  [52] J.Wilkins          G.Bernard          A.Luck            
-##  [55] N.Hines            A.Dalton           C.Michael         
-##  [58] T.Taylor           C.Hyde             J.Conner          
-##  [61] D.Johnson          R.Switzer          B.Roethlisberger  
-##  [64] N.Chubb            M.Gordon           A.Ekeler          
-##  [67] T.Benjamin         K.Hunt             P.Mahomes         
-##  [70] S.Ware             D.Watt             Dam. Williams     
-##  [73] R.Freeman          P.Lindsay          C.Carson          
-##  [76] R.Penny            E.Elliott          C.Newton          
-##  [79] D.Moore            C.Anderson         C.McCaffrey       
-##  [82] R.Smith            T.Austin           A.Peterson        
-##  [85] C.Thompson         A.Smith            R.Kelley          
-##  [88] T.Cohen            J.Howard           M.Trubisky        
-##  [91] A.Rodgers          T.Montgomery       B.Powell          
-##  [94] I.Crowell          L.Blount           T.Riddick         
-##  [97] S.Darnold          K.Johnson          R.Anderson        
-## [100] M.Stafford         M.Lynch            A.Cooper          
-## [103] B.Cooks            T.Gurley           D.Carr            
-## [106] C.Kupp             D.Martin           R.Woods           
-## [109] J.Richard          J.Ross             C.Moore           
-## [112] I.Smith            M.Sanu             M.Schaub          
-## [115] M.Mack             J.Crowder          B.Gabbert         
-## [118] S.Wilson           W.Smallwood        N.Foles           
-## [121] S.Watkins          J.Grant            P.Rivers          
-## [124] A.Callaway         J.Garoppolo        G.Tate            
-## [127] J.Goff             S.Michel           B.Wilds           
-## [130] D.Booker           D.Prescott         J.Stewart         
-## [133] E.Manning          T.Gabriel          T.Burton          
-## [136] R.Wilson           C.Ridley           T.Hill            
-## [139] A.Jones            J.Adams            M.Johnson         
-## [142] C.Wentz            C.Ivory            M.Boone           
-## [145] K.Smith            M.Bryant           E.Sanders         
-## [148] T.Boyd             A.Armah            W.Gallman         
-## [151] M.Goodwin          M.Brown            T.Madden          
-## [154] C.Edmonds          A.Humphries        S.Ridley          
-## [157] J.McNichols        K.Coutee           J.Agnew           
-## [160] R.Jones            M.Walton           M.Davis           
-## [163] C.Kirk             J.Rosen            B.Mayfield        
-## [166] D.Washington       C.Beathard         D.Thomas          
-## [169] R.McCloud          K.Allen            M.Williams        
-## [172] M.Ingram           B.Pinion           R.Mostert         
-## [175] R.Thomas           T.Lockett          D.Brees           
-## [178] K.Bibbs            J.Winston          M.Harris          
-## [181] Q.Enunwa           R.Turbin           E.Ebron           
-## [184] C.Ham              D.Coleman          B.Osweiler        
-## [187] H.Hurst            G.Edwards          N.Paul            
-## [190] J.Charles          K.Barner           C.Keenum          
-## [193] D.Fluellen         C.Samuel           J.Wright          
-## [196] D.Jackson          W.Snead IV         K.Juszczyk        
-## [199] C.Fejedelem        E.Engram           E.Penny           
-## [202] K.Ballage          D.Westbrook        N.Agholor         
-## [205] P.Richardson       R.Jones II         A.Miller          
-## [208] T.Cannon           D.Harris           A.Thielen         
-## [211] J.Edelman          T.Pryor            B.Perriman        
-## [214] E.McGuire          K.Golladay         J.Hekker          
-## [217] C.Davis            J.Smith-Schuster   J.Samuels         
-## [220] J.Driskel          Z.Line             N.Bellore         
-## [223] J.Develin          J.McCown           I.McKenzie        
-## [226] M.Barkley          J.Townsend         C.Prosise         
-## [229] J.Heath            M.Hall             B.Marshall        
-## [232] C.Batson           C.Artis-Payne      T.Mizzell         
-## [235] C.Daniel           Z.Zenner           B.Ellington       
-## [238] C.McCoy            G.Kittle           J.Wilson          
-## [241] T.Bohanon          S.Roberts          J.Nelson          
-## [244] E.St. Brown        L.Stocker          K.Dixon           
-## [247] B.Bolden           Z.Pascal           C.Kessler         
-## [250] A.Erickson         D.Pettis           N.Mullens         
-## [253] J.Chesson          J.Landry           T.Patrick         
-## [256] J.Jackson          D.Heyward-Bey      Dar.Williams      
-## [259] D.Newsome          D.Carter           K.Ford            
-## [262] B.Anger            T.Logan            D.Waller          
-## [265] R.Dixon            J.Johnson          D.Williams        
-## [268] J.McKissic         J.Davis            C.Bojorquez       
-## [271] D.Hopkins          M.Palardy          S.Bradford        
-## [274] A.Roberts          A.Janovich         T.Sharpe          
-## [277] Ty.Williams        B.Cunningham       D.Turner          
-## [280] R.Streater         J.Reynolds         S.Perine          
-## [283] A.Abdullah         J.Lewis            S.Mannion         
-## [286] M.Dickson          A.McCarron         Z.Jones           
-## [289] T.Wilson           B.Hoyer            C.Rogers          
-## [292] L.Carroo           R.Greene           S.Shepard         
-## [295] T.Quinn            G.Smith            M.Valdes-Scantling
-## [298] M.Sanchez          A.Sherman          B.Hill            
-## [301] C.Sutton           J.Dobbs            P.DiMarco         
-## [304] J.Kelly            T.Lewis           
-## 304 Levels: A.Abdullah A.Armah A.Blue A.Callaway A.Collins A.Cooper ... Z.Zenner</code></pre>
-<pre class="r"><code>unique(df_2018_cleaned$punter_player_name)</code></pre>
-<pre><code>##  [1] &lt;NA&gt;             C.Johnston       M.Bosher         C.Bojorquez     
-##  [5] S.Koch           R.Dixon          T.Morstead       R.Allen         
-##  [9] T.Daniel         M.Wile           B.Pinion         M.Haack         
-## [13] B.Kern           K.Huber          J.Berry          B.Colquitt      
-## [17] D.Kaser          C.Sturgis        D.Colquitt       M.King          
-## [21] M.Dickson        C.Jones          M.Palardy        T.Way           
-## [25] A.Lee            J.Scott          P.O'Donnell      L.Edwards       
-## [29] S.Martin         J.Hekker         J.Townsend       R.Sanchez       
-## [33] B.Anger          L.Cooke          C.Wadman         D.Jones         
-## [37] C.Schmidt        B.Roethlisberger M.Darr          
-## 38 Levels: A.Lee B.Anger B.Colquitt B.Kern B.Pinion ... T.Way</code></pre>
-<pre class="r"><code>unique(df_2018_cleaned$kicker_player_name)</code></pre>
-<pre><code>##  [1] &lt;NA&gt;         M.Bryant     J.Elliott    J.Tucker     S.Hauschka  
-##  [6] J.Lambo      A.Rosas      W.Lutz       C.Catanzaro  S.Gostkowski
-## [11] K.Fairbairn  D.Carlson    R.Gould      R.Succop     J.Sanders   
-## [16] R.Bullock    A.Vinatieri  C.Boswell    C.Sturgis    H.Butker    
-## [21] S.Janikowski B.McManus    G.Gano       D.Hopkins    C.Parkey    
-## [26] J.Myers      M.Prater     M.Nugent     G.Zuerlein   M.Crosby    
-## [31] Z.Gonzalez   J.Hekker     B.Maher      G.Joseph     S.Ficken    
-## [36] P.Dawson     D.Bailey     M.McCrane    C.Santos     M.Badgley   
-## [41] G.Tavecchio  K.Forbath   
-## 41 Levels: A.Rosas A.Vinatieri B.Maher B.McManus C.Boswell ... Z.Gonzalez</code></pre>
 </div>
+</div>
+<div id="training-testing-data-split" class="section level1">
+<h1>Training Testing Data Split</h1>
+<pre class="r"><code>set.seed(1)
+
+# test-train split
+nfl_tst_trn_split = initial_split(df_2018_cleaned, prop = 0.80)
+nfl_trn = training(nfl_tst_trn_split)
+nfl_tst = testing(nfl_tst_trn_split)</code></pre>
 </div>
 <div id="data-modeling" class="section level1">
 <h1>Data Modeling</h1>
-<pre class="r"><code>lm_mod = lm(wpa ~  game_seconds_remaining + yards_gained + yards_after_catch, data = df_2018_cleaned)
-summary(lm_mod)</code></pre>
-<pre><code>## 
-## Call:
-## lm(formula = wpa ~ game_seconds_remaining + yards_gained + yards_after_catch, 
-##     data = df_2018_cleaned)
-## 
-## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -1.00408 -0.01221 -0.00179  0.01063  0.95081 
-## 
-## Coefficients:
-##                          Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)            -1.081e-02  3.967e-04 -27.243  &lt; 2e-16 ***
-## game_seconds_remaining  2.406e-07  1.922e-07   1.252    0.211    
-## yards_gained            2.950e-03  3.026e-05  97.485  &lt; 2e-16 ***
-## yards_after_catch      -2.673e-04  5.604e-05  -4.770 1.85e-06 ***
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## Residual standard error: 0.03869 on 37346 degrees of freedom
-## Multiple R-squared:  0.2739, Adjusted R-squared:  0.2738 
-## F-statistic:  4695 on 3 and 37346 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>calc_rmse = function(actual, predicted){
+  sqrt(mean((actual - predicted)^2))
+}</code></pre>
+<pre class="r"><code># Omitting random NAs in the data
+nfl_trn = na.omit(nfl_trn)
+nfl_tst = na.omit(nfl_tst)
+
+# Train data frame matrix
+trn_x = model.matrix(wpa ~ ., nfl_trn)[, -1]
+trn_y = nfl_trn %&gt;%
+  select(wpa) %&gt;%
+  unlist() %&gt;%
+  as.numeric()
+
+# Test data frame matrix
+tst_x = model.matrix(wpa ~., nfl_tst)[, -1]
+tst_y = nfl_tst %&gt;%
+  select(wpa) %&gt;%
+  unlist() %&gt;%
+  as.numeric()
+
+set.seed(42)
+# Using glmnet function to build the ridge regression model
+cv_fit = cv.glmnet(trn_x, trn_y, alpha = 0,  nfolds = 10)
+plot(cv_fit)</code></pre>
+<p><img src="data:image/png;base64,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" width="672" /></p>
+<pre class="r"><code># Best lambda value
+best_lambda = cv_fit$lambda.min
+
+# Calculating rmse 
+predicted = predict(cv_fit, tst_x)
+predicted = as.vector(predicted)
+ridge_model_RMSE = calc_rmse(tst_y, predicted)
+ridge_model_RMSE</code></pre>
+<pre><code>## [1] 0.03779339</code></pre>
+<pre class="r"><code>#Use cross validation with 5folds
+cv = trainControl(method = &quot;cv&quot;, number = 10)
+set.seed(42)
+#Train the data with gbm method and RMSE metric.
+gbm_model = train(trn_x, trn_y,
+ method = &quot;gbm&quot;, 
+ metric = &quot;RMSE&quot;,
+ trControl = cv, verbose = FALSE)
+#Predict rmse of test dataset 
+gbm_pred = predict(gbm_model, tst_x)
+gbm_RMSE = calc_rmse(tst_y, gbm_pred)
+gbm_RMSE</code></pre>
+<pre><code>## [1] 0.03520193</code></pre>
+<pre class="r"><code>linear_model = lm(trn_y ~ trn_x)
+linear_pred = predict(linear_model, as.data.frame(tst_x))</code></pre>
+<pre><code>## Warning: &#39;newdata&#39; had 6902 rows but variables found have 27508 rows</code></pre>
+<pre><code>## Warning in predict.lm(linear_model, as.data.frame(tst_x)): prediction from a
+## rank-deficient fit may be misleading</code></pre>
+<pre class="r"><code>linear_rmse = calc_rmse(linear_pred, trn_y)
+linear_rmse</code></pre>
+<pre><code>## [1] 0.03739534</code></pre>
 </div>
 <div class="footnotes">
 <hr />
