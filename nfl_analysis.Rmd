@@ -163,6 +163,8 @@ set.seed(42)
 nfl_step = train(wpa ~., data = nfl_trn, method = "leapBackward", 
                  tuneGrid = data.frame(nvmax = 1:24),
                  trControl = train_control, na.action = na.omit) 
+nfl_step$results
+nfl_step$bestTune
 ```
 Linear model gives us a training rmse of 0.03739534, the cross validated step function where we are tuning for the best number of parameters is using all 24 features which gives us an CV rmse of 0.04274302, this was using 10 folds. Since all features gives us the best cv rmse, the full model is no different than the cv one. 
 
