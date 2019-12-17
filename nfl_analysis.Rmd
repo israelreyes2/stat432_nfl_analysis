@@ -322,7 +322,17 @@ final_results = tibble(
 final_results
 ```
 
-# Let's rewind to Feburary of 2015
+```{r visual1, cache = TRUE, echo = FALSE}
+final_compare = as.data.frame(cbind(final_pred, tst_y))
+plot1 = ggplot(final_compare, aes(x = tst_y, y = final_pred)) + geom_point(shape = 5, color = "black") + geom_abline(slope = 1, col = "red") + ggtitle("GBM Actual vs Prediction") + xlab("Actual") + ylab("Prediction")
+plot1
+```
+
+```{r visual2, cache = TRUE, echo = FALSE}
+temp = summary(final_model, plotit = FALSE)[1:5,]
+plot2 = ggplot(temp, aes(x = var, y = rel.inf)) + geom_bar(stat = "identity")+ coord_flip() + ggtitle("Top 5 important factors") + xlab("Importance") + ylab("Factors") 
+plot2
+```
 
 # Discussion
 
