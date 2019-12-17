@@ -282,6 +282,8 @@ trainning_results = tibble(
 trainning_results
 ```
 
+Looking at our train data results, we can see that the Gradient Boosting model has the least and 'best' RMSE value of the five models. However, it is the best by a very small margin, the fact that the Linear Model has an RMSE with 0.001 margin to the best model does not look promising at all. The results for ridge and lasso regression make sense as well because those kinds of model aim to reduce model complexity by either penalizing features (Ridge) or turning them close to or being zero (Lasso). However, even when these models are optimized to reduce complexity just like our stepwise function did it only came to a value also quite close to the lowest RMSE value that the GBM model accomplished. The shortcomings that we hoped Lasso and Ridge would pick up from, the Gradient Boosted model somehow managed to do with a slightly better performance. Through the use of multiple weak tree models the gradient boosted model is made to reduce RMSE so this model performing the best is not too much of a surprise, in fact many winning models on Kaggle's data science contests are through the use of GBM. 
+
 ```{r test rmse, cache = TRUE, include = FALSE}
 # Omitting random NAs in the data
 nfl_trn = na.omit(nfl_trn)
@@ -335,6 +337,8 @@ plot2
 ```
 
 # Discussion
+
+Now that we have selected GBM to be our best performing model, our test RMSE for this model is actually better than the validation one which is a surprise but it is only so slightly better. Sadly this model does not have a very good showing at all, with an RMSE of `r final_RMSE` this essentially means that our prediction is give or take `r final_RMSE * 100` percent off compared to the actual WPA. Our ultimate goal was to be able to predict WPA and although our model fell short, we have to take into consideration that we are limiting the data by a very large margin. This model is supposed to be applicable during NFL games by head coaches, there are some very valuable information we cut off in order to make a model that can be reasonable used. For example, the reason we took out any defensive features was because whether you are on the receiving end or not, you do not know what kinds of decisions and plays the opposing team will be making restriction the information available even more. With much more meaningful information this model can be a very promising for the goal of predicting WPA by a good margin but for the sake of our motivation it is sadly not possible to be able to algorithmically compute WPA given only information made available in real time during the game. 
 
 We had a broad yet clear goal in our mind with this project. We wanted to see if the play-calling of the coaches made analytical sense. After running various statical models onto our cleaned NFL 2018 season play-by-play data, we found that everything in football can't be explained by purely relying on analytics.  We realize such for the following reasons.
 
