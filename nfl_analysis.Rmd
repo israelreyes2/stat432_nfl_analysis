@@ -324,6 +324,15 @@ final_results
 
 # Discussion
 
+We had a broad yet clear goal in our mind with this project. We wanted to see if the play-calling of the coaches made analytical sense. After running various statical models onto our cleaned NFL 2018 season play-by-play data, we found that everything in football can't be explained by purely relying on analytics.  We realize such for the following reasons.
+
+Analytically, we were only limited to only a few offensive game measures. Like we have mentioned previously, there is no way for a head coach of the possession team to guess what kind of defense the opposing team will play or rather quarterback is going to be sacked or not. As a coach of a team, a coach will never guess that his/her quarterback will be sacked. There are too many predictor variables that get considered in the game of football.  
+The origin of WPA was to measure the impact of the defensive player have on the game.  Statically measuring defensive players is extremely difficult and non-standard tasks. WPA was mainly created to intake the impact of the defensive player on the team's winning chance. However, due to the unpredictable play calling of the defensive team in the game,  we limited ourselves only to the offensive side of the game.
+We have proven that yards gained was one of the most influential factors for WPA from our chosen offensive variables. However, there is no way that a coach will know the exact yards gained before the play ends. In the end, our most influential factor is a factor that can't be inputted into the model based on the variables we had.
+Finally, every single coach in the NFL gets paid millions to call the best play based on their experience, knowledge of the game and their players, and the identity of their teams. A group of college students wouldn't be able to fully analyze these with our limited knowledge in both statical modeling and the game of football. Some of these coaches have coached a football longer than we have lived or played every professional level of football there is. 
+
+We all that in our mind, a further study utilizing both offensive and defensive statistics of the game will be suggested. In an attempt to analytically breakdown football, we realized that it might be harder than analyze other games such as baseball due to so many unpredictable situations in the game. 
+
 # Appendix
 
 ## Data Dictionary
