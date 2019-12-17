@@ -204,7 +204,7 @@ nfl_step = train(wpa ~., data = nfl_trn, method = "leapBackward",
 nfl_step$bestTune
 ```
 
-Linear model gives us a training rmse of 0.03739534, the cross validated step function where we are tuning for the best number of parameters is using all 24 features which gives us an CV rmse of 0.04274302, this was using 10 folds. Since all features gives us the best cv rmse, the full model is no different than the cv one. 
+Linear model gives us a training rmse of `r linear_rmse`, the cross validated step function where we are tuning for the best number of parameters is using all 24 features which gives us an CV rmse of 0.04274302, this was using 10 folds. Since all features gives us the best cv rmse, the full model is no different than the cv one. 
 
 ```{r lasso model, cache= TRUE}
 # Omitting random NAs in the data
@@ -232,7 +232,7 @@ lasso_pred = predict(lasso_mod, val_x)
 lasso_rmse = calc_rmse(val_y, lasso_pred)
 ```
 
-LASSO model gives us a trainning rmse of 0.03913281, the cross validated using deafult option. 
+LASSO model gives us a trainning rmse of `lasso_rmse`, the cross validated using deafult option. 
 
 ```{r ridge modeling, cache = TRUE}
 set.seed(42)
@@ -250,7 +250,7 @@ ridge_pred = as.vector(ridge_pred)
 ridge_model_RMSE = calc_rmse(val_y, ridge_pred)
 ```
 
-Ridge model gives us a trainning rmse of 0.03931021, the cross-validation of 10 folds were used. 
+Ridge model gives us a trainning rmse of `r ridge_model_RMSE`, the cross-validation of 10 folds were used. 
 
 ```{r, GBM modeling, cache = TRUE}
 #Use cross validation with 5folds
@@ -266,7 +266,7 @@ gbm_pred = predict(gbm_model, val_x)
 gbm_RMSE = calc_rmse(val_y, gbm_pred)
 ```
 
-GBM model gives us a trainning rmse of 0.03569928. GBM trainning RMSE was the best RMSE from our model, so we will advance our study further using this model. 
+GBM model gives us a trainning rmse of `r gbm_RMSE` this value was the best one out of the rest of the models, so we will advance our study further using this model. 
 
 ***
 
