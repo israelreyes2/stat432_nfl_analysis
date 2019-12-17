@@ -334,9 +334,6 @@ plot2 = ggplot(temp, aes(x = var, y = rel.inf)) + geom_bar(stat = "identity")+ c
 plot2
 ```
 
-
-# Let's rewind to Feburary of 2015
-
 # Discussion
 
 We had a broad yet clear goal in our mind with this project. We wanted to see if the play-calling of the coaches made analytical sense. After running various statical models onto our cleaned NFL 2018 season play-by-play data, we found that everything in football can't be explained by purely relying on analytics.  We realize such for the following reasons.
