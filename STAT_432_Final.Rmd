@@ -1,0 +1,407 @@
+---
+title: "Down By 4, 2nd And Goal, 26 Seconds To Go, What Play Are YOU Calling?"
+author:
+- Eric Jong Bum Kim (jekim3)
+- Israel Reyes (ir2)
+- Jihee Hwang (jhwang55)
+- Hyun Suk Lee(hyunsuk3)
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_document: default
+  pdf_document: default
+subtitle: STAT 432 FA2019 - Team LRHK
+---
+
+***
+
+# Abstract 
+
+Statistical learning methods were applied to NFL data in order to predict whether certain plays increase or hurt the chances of a team winning the game. A variety of modeling techniques were considered some simple and some more complicated in order to evaluate whether efficiency and resources necessary for a complicated model are justified compared to a simple linear regression model. We used a small portion of recent NFL data, so perhaps including lifetime plays from even more past seasons shows a more accurate representation of the model. 
+
+***
+
+# Introduction
+
+The National Football League is very beloved in the United States and it shows, although it is not necessarily the most viewed sports league in comparison to European soccer the NFL still generates the most revenue out of every sports league in the world. NFL teams, staff, and players make it their mission to perform with their absolute best in order to please their fans and supporters who allow their dreams of playing professional football to strive and continue. At first glance American football might seem like a brawns vs brawns sport, but there is actually quite a lot of strategy involved with how a head coach, along with their coordinators, decide to make a play. However, currently calling a play has no algorithmic procedure. Head coaches call a play mostly based on their past experiences and accessing the current situation of the field and game and make a decision what they think will give them more yardage, score a touchdown, stall the clock, etc. 
+
+One of the most debated play calling happened in the 2015 Super Bowl. In Super Bowl XLIX (Seattle Seahawks vs. New England Patriots), Down by 4 and on 2nd and goal with 26 seconds to go,  Pete Caroll decided to pass the ball instead of running the ball. In the context of the game, Seattle Seahawks had one of the most dominant running back in the game at the time, Marshawn  Lynch, but they decided to pass the ball resulting in an interception, and New England Patriots won the Super Bowl. Many questioned, why would Seahawks pass the ball at that point in the game? This play still haunts Seahawks fans. With that, did Pete Caroll and Seattle Seahawks believe that passing play would have resulted in increasing the probability of the winning game more than a running play? Maybe we could use the statical models to make sense of such a situation. 
+
+In an attempt to construct meaningful and effective ways for coaches to call what type of play purely rely on analytic probability, various statistical learning techniques will be applied to the NFL play-by-play data. The main goal of our study is to see if football-game related measures such as game clock situation, position on the field, and players on the field at the moment can increase the chance of winning the most for the team. In NFL, there is a measure called, winning percentage. Winning percentage measures the probability of a team winning at the given moment of the game, and since football game stop after each play, winning percentage changes after each play.  Our model will focus only on the offensive side of the ball. Ultimately, we will see if we can utilize statistical learning techniques for an offensive coordinator to call plays based on analytic.
+
+***
+
+# Methods
+
+## Background Information On Data
+
+The dataset was retrieved from Kaggle [^1] and originated from github [^2]. In order to provide clean, play-by-play data via open-source software package in football, a group of Carnegie Mellon University statistical researchers [^3] Maksim Horowitz, Ron Yurko, and Sam Ventura built an nflscrapR [^4] package in R which outputs datasets for individual play, player, game, and season levels accessed from the NFL [^5]. There are three versions of the data sources in Kaggle, and we will be using the most recent version (v5) for NFL Play by Play data for 2009-2018.
+
+This dataset was accessed through Kaggle [^1] made possible through Carnegie Mellon University statistical researchers Maksim Horowitz, Ron Yurko, and Sam Ventura [^3] who built and released nflscapR [^4] which uses the NFL API [^5] in order to scrape, clean, and parse data in order to provide datasets that are easy to use. There are three versions of the data sources in Kaggle, and we will be using the most recent version (v5) for NFL Play by Play data for 2009-2018. More documentation and information can be found on the official GitHub page of this package [^2].
+
+This package supplies freely available datasets for current and reproducible research in the statistical analysis of NFL, which has not been accessible in the past unlike other sports such as baseball, basketball, and hockey. Using the data from the package, the researchers from Carnegie Mellon also built reproducible methods for generating expected points and win probability models for the NFL [^6] which is included in the datasets.  
+
+## Data Description
+
+The NFL play-by-play data for season contains 257 different variables in an attempt to explain every play of the game in every game of the season. Each and every play of the game is broken down into great detail containing information on the game situation, players involved, results, and advanced football analytic metrics. Here are a few variables correlating to these.
+
+ - Game situation : _Posteam_, _Defteam_,  _Game_date_
+ - Play results : _yrd_gained_, _yrd_after_catch_
+ - advanced analytic : _wpa_
+
+To further explain WPA measure, WPA stands for win probability added. The difference between the team's win probability at the beginning of the play and at the end of the play. For the purpose of our study, we will assume that WPA measures a team's probability of winning after each offensive plays are called. We will also manipulate the data into a more concise form. 
+
+## Data Cleaning
+
+
+Our project will only consider the 2018 NFL season. 2018 season opened with Atlanta Falcons playing Philadelphia Eagles on 09/06/2018 and ended on 12/30/2018. We decided to focus on the 2018 season only due to the size of the data, and the ever-changing trends of the style of the game. 
+
+With 257 variables, we had to narrow down our variables. There are many variables that are quite meaningless. Based on our prior knowledge of the game, we will narrow down to variables that we believe might be variables that coaches can input during the game. These include variables such as field position, game clock situations, and result of the game. these variables are subject to change as the study goes further. 
+
+We will consider variables that are measured after the plays, such as the yard gained after the catch. Putting on the offensive coordinator's hat, I would assume if I run a passing play, I expect my receiver to catch the pass and run as much as they can. Even though yards after the catch are unpredictable, if I were an offensive coordinator, I would have confidence in my receiver to gain yards after catching the pass. 
+
+In our data, there are 10 different types of plays a team execute in the game. However, for the purpose of our study, we will remove the following play types for the following reasons. 
+
+  - NA: these are game administrative play types such as the end of the quarters, end of the regulation, and 2-minute warnings. These are already considered with the game time remaining. 
+
+  - QB_kneel: most of the time, QB will only kneel when the game result has already been decided and to run down the clock to the end of the game, so we will ignore these.
+
+  - kickoff: In NFL games, two kickoffs always happen, once at the beginning of the 1st quarter and once more at the beginning of the 3rd quarter. However, WPA is not calculated when the initial kickoff in the 1st quarter happens, so these will be ignored. However, WPA from any other kickoffs, after scoring, is valid. 
+
+  - no_play: no_play represents plays in which a penalty has occurred. We will ignore these since an offensive coordinator will never expect their own plays to be called for a penalty. For the purpose of calling plays, penalty factors are not considered.
+
+After cleaning up the variables based on our prior knowledge of the game, the following variables' NAs will be replaced with the following methods.
+
+These are numerical variables, and for these NAs represented followings and are replaced by 0:
+
+  - Air Yards: NAs are when either running or special team plays are called
+  - Yards After Catch: NAs are when either running or special team players are called or 0-yard gains after the catch
+  - Kick Distance: Non-special team plays are called
+
+These are character variables, and these NAs are replaced with "NA" since NAs represent other types of plays are called:
+
+ - Pass Location
+ - Run Location
+ - Run Gap
+ - Field Goal Result
+ - Pass Length 
+
+Variables are transformed into factor types to ensure our model will intake them accordingly. 
+
+## Statistical Learning Task
+
+We will use statistical learning methods to predict WPA from multiple factors. There are various features like a defending team, attacking team, play type, run_gaptackle, etc. which are all related to the gameplay. However, we only included past game history because we will predict the WPA of the future based on the past record. We will use three methods on this project: ridge-regression, GBM, and simple linear regressions. The problem is how to choose useful factors while we train the data. Ridge regression may give us answer to select useful factors. Also, we will use "RMSE" as the prime metric of model performance. 
+
+## Data Loading
+
+```{r package loading, warning = FALSE, include=FALSE}
+library(dplyr)
+library(tidyverse)
+library(caret)
+library(rsample)
+library(glmnet)
+library(kableExtra)
+```
+
+```{r data loading, message = FALSE, warning=FALSE, echo = TRUE}
+#df_2018_first = read_csv("NFL_2018_first.csv") #first half data only
+#df_2018_second = read_csv("NFL_2018_second.csv") #second half data only
+
+df_2018_first = read_csv("C:/Users/jekim3/Desktop/NFL_2018_first.csv")
+df_2018_second = read_csv("C:/Users/jekim3/Desktop/NFL_2018_second.csv")
+
+df_2018 = rbind(df_2018_first, df_2018_second) #combining them both
+```
+
+```{r variable clean up offense only, warning=FALSE, echo = FALSE}
+keep = c("posteam", "defteam", "yardline_100", "game_date", "game_seconds_remaining", "qtr", "down", "ydstogo", #game administravtive variables
+         "play_type","shotgun", "no_huddle", "qb_dropback", "pass_location", #offensive game types
+         "yards_gained", "pass_length", "air_yards", "yards_after_catch", #offensive pass play results
+         "run_location", "run_gap", #offensive run plays
+         "field_goal_result", "kick_distance", #speical teams
+         "posteam_timeouts_remaining", "defteam_timeouts_remaining", #time out remainings
+         "wpa") #responce variables
+
+df_2018_reduced = subset(df_2018, select = keep)
+```
+
+```{r removing adminstrative playtypes, warning=FALSE, echo = FALSE}
+#adminstratvie plays such as two-minute warnings will be removed
+#game_warnings = sum(is.na(df_2018$play_type)) #all of the NA playtypes are either end of quaters or two-min warnings. (1429 of them)
+
+df_2018_reduced_no_admin_plays = df_2018_reduced[complete.cases(df_2018_reduced[ , "play_type"]),] #40607 rows
+```
+
+```{r, removing qb kneels, echo = FALSE}
+df_2018_reduced_no_qb_kneels = subset(df_2018_reduced_no_admin_plays, df_2018_reduced_no_admin_plays$play_type != "qb_kneel") #40247 rows
+```
+
+```{r, removing inital kickoffs, echo = FALSE}
+df_2018_reduced_no_kick_off = df_2018_reduced_no_qb_kneels %>%
+  subset(game_seconds_remaining != 3600 & play_type != "kickoff") #37641 rows
+```
+
+```{r clenaing up various missing wpa rows, echo = FALSE}
+df_2018_cleaned = df_2018_reduced_no_kick_off[complete.cases(df_2018_reduced_no_kick_off[ , "wpa"]),]
+```
+
+```{r replacing na with 0 for numeric variables, echo = FALSE}
+df_2018_cleaned$air_yards[is.na(df_2018_cleaned$air_yards)] = 0
+df_2018_cleaned$yards_after_catch[is.na(df_2018_cleaned$yards_after_catch)] = 0
+df_2018_cleaned$kick_distance[is.na(df_2018_cleaned$kick_distance)] = 0
+```
+
+```{r replacing NAs with characters, echo = FALSE}
+df_2018_cleaned$pass_location[is.na(df_2018_cleaned$pass_location)] = "NA"
+df_2018_cleaned$run_location[is.na(df_2018_cleaned$run_location)] = "NA"
+df_2018_cleaned$run_gap[is.na(df_2018_cleaned$run_gap)] = "NA"
+df_2018_cleaned$field_goal_result[is.na(df_2018_cleaned$field_goal_result)] = "NA"
+df_2018_cleaned$pass_length[is.na(df_2018_cleaned$pass_length)] = "NA"
+```
+
+```{r variable factor type conversion, echo = FALSE}
+factor_list = c("posteam", "defteam", "play_type", "pass_location", "pass_length", "run_location", "run_gap", "field_goal_result")
+
+df_2018_cleaned[factor_list] <- lapply(df_2018_cleaned[factor_list], factor)
+```
+
+
+```{r data split, echo = FALSE}
+set.seed(1)
+
+# test-train split
+nfl_tst_trn_split = initial_split(df_2018_cleaned, prop = 0.80)
+nfl_trn = training(nfl_tst_trn_split)
+nfl_tst = testing(nfl_tst_trn_split)
+
+# estimation-validation split
+nfl_est_val_split = initial_split(nfl_trn, prop = 0.80)
+nfl_est = training(nfl_est_val_split)
+nfl_val = testing(nfl_est_val_split)
+```
+
+## Data Modeling 
+
+```{r calculating rmse function, message=FALSE, warning=FALSE, echo = FALSE}
+calc_rmse = function(actual, predicted){
+  sqrt(mean((actual - predicted)^2))
+}
+```
+
+```{r linear modeling and stepwise, results = 'hide', message=FALSE, warning=FALSE, cache= TRUE}
+nfl_trn = na.omit(nfl_trn)
+nfl_tst = na.omit(nfl_tst)
+
+nfl_lm = lm(wpa ~., data = nfl_trn)
+lm_pred = predict(nfl_lm, nfl_trn)
+linear_rmse = calc_rmse(actual = nfl_trn$wpa, predicted = lm_pred)
+
+train_control = trainControl(method = "cv", number  = 10)
+set.seed(42)
+nfl_step = train(wpa ~., data = nfl_trn, method = "leapBackward", 
+                 tuneGrid = data.frame(nvmax = 1:24),
+                 trControl = train_control, na.action = na.omit) 
+#nfl_step$results
+nfl_step$bestTune
+```
+
+Linear model gives us a training rmse of `r linear_rmse`, the cross validated step function where we are tuning for the best number of parameters is using all 24 features which gives us an CV rmse of 0.04274302, this was using 10 folds. Since all features gives us the best cv rmse, the full model is no different than the cv one. 
+
+```{r lasso model, cache= TRUE}
+# Omitting random NAs in the data
+nfl_est = na.omit(nfl_est)
+nfl_val = na.omit(nfl_val)
+
+# Estimation data frame matrix
+est_x = model.matrix(wpa ~ ., nfl_est)[, -1]
+est_y = nfl_est %>%
+  select(wpa) %>%
+  unlist() %>%
+  as.numeric()
+
+# Validation data frame matrix
+val_x = model.matrix(wpa ~., nfl_val)[, -1]
+val_y = nfl_val %>%
+  select(wpa) %>%
+  unlist() %>%
+  as.numeric()
+
+set.seed(42)
+lasso_mod = cv.glmnet(est_x, est_y, alpha = 1)
+
+lasso_pred = predict(lasso_mod, val_x)
+lasso_rmse = calc_rmse(val_y, lasso_pred)
+```
+
+LASSO model gives us a trainning rmse of `lasso_rmse`, the cross validated using deafult option. 
+
+```{r ridge modeling, cache = TRUE}
+set.seed(42)
+# Using glmnet function to build the ridge regression model
+ridge_mod = cv.glmnet(est_x, est_y, alpha = 0,  nfolds = 10)
+
+#plot(ridge_mod)
+
+# Best lambda value
+best_lambda = ridge_mod$lambda.min
+
+# Calculating rmse 
+ridge_pred = predict(ridge_mod, val_x)
+ridge_pred = as.vector(ridge_pred)
+ridge_model_RMSE = calc_rmse(val_y, ridge_pred)
+```
+
+Ridge model gives us a trainning rmse of `r ridge_model_RMSE`, the cross-validation of 10 folds were used. 
+
+```{r, GBM modeling, cache = TRUE}
+#Use cross validation with 5folds
+cv = trainControl(method = "cv", number = 10)
+set.seed(42)
+#Train the data with gbm method and RMSE metric.
+gbm_model = train(est_x, est_y,
+ method = "gbm", 
+ metric = "RMSE",
+ trControl = cv, verbose = FALSE)
+#Predict rmse of test dataset 
+gbm_pred = predict(gbm_model, val_x)
+gbm_RMSE = calc_rmse(val_y, gbm_pred)
+```
+
+GBM model gives us a trainning rmse of `r gbm_RMSE` this value was the best one out of the rest of the models, so we will advance our study further using this model. 
+
+***
+
+# Results
+
+```{r result table, include = FALSE, echo = FALSE}
+trainning_results = tibble(
+  Models = c("Linear", "Ridge", "Lasso", "GBM"),
+  "Validation RMSE" = c(linear_rmse, ridge_model_RMSE, lasso_rmse, gbm_RMSE )) %>%
+  kable(digits = 3) %>%
+  kable_styling("striped", full_width = FALSE)
+
+trainning_results
+```
+
+Looking at our train data results, we can see that the Gradient Boosting model has the least and 'best' RMSE value of the five models. However, it is the best by a very small margin, the fact that the Linear Model has an RMSE with 0.001 margin to the best model does not look promising at all. The results for ridge and lasso regression make sense as well because those kinds of model aim to reduce model complexity by either penalizing features (Ridge) or turning them close to or being zero (Lasso). However, even when these models are optimized to reduce complexity just like our stepwise function did it only came to a value also quite close to the lowest RMSE value that the GBM model accomplished. The shortcomings that we hoped Lasso and Ridge would pick up from, the Gradient Boosted model somehow managed to do with a slightly better performance. Through the use of multiple weak tree models the gradient boosted model is made to reduce RMSE so this model performing the best is not too much of a surprise, in fact many winning models on Kaggle's data science contests are through the use of GBM. 
+
+```{r test rmse, include = FALSE}
+# Omitting random NAs in the data
+nfl_trn = na.omit(nfl_trn)
+nfl_tst = na.omit(nfl_tst)
+
+# Train data frame matrix
+trn_x = model.matrix(wpa ~ ., nfl_trn)[, -1]
+trn_y = nfl_trn %>%
+  select(wpa) %>%
+  unlist() %>%
+  as.numeric()
+
+# Test data frame matrix
+tst_x = model.matrix(wpa ~., nfl_tst)[, -1]
+tst_y = nfl_tst %>%
+  select(wpa) %>%
+  unlist() %>%
+  as.numeric()
+
+# Best model
+set.seed(42)
+final_model = train(trn_x, trn_y,
+                  method = "gbm", 
+                  metric = "RMSE",
+                  trControl = cv, verbose = FALSE)
+
+final_pred = predict(final_model, tst_x)
+final_RMSE = calc_rmse(tst_y, final_pred)
+```
+
+```{r final test rmse table, include= FALSE, echo = FALSE}
+final_results = tibble(
+  Models = c("GBM with cross-validation"),
+  "Test RMSE" = c(final_RMSE)) %>%
+  kable(digits = 3) %>%
+  kable_styling("striped", full_width = FALSE)
+
+final_results
+```
+
+```{r visual1, echo = FALSE,warning=FALSE}
+final_compare = as.data.frame(cbind(final_pred, tst_y))
+
+plot1 = ggplot(final_compare, aes(x = tst_y, y = final_pred)) + geom_point(shape = 5, color = "black") + geom_abline(slope = 1, col = "red") + ggtitle("GBM Actual vs Prediction") + xlab("Actual") + ylab("Prediction") +
+   xlim(-0.5, 0.5) + ylim(-0.2 ,0.2)
+plot1
+```
+
+This graph shows us a dot plot with actual data and prediction data with y = x line. The line shows us what our y-axis should be. Our prediction spread through y=x, and even though there is some variance, we predicted the data pretty well.
+
+```{r visual2, echo = FALSE}
+temp = summary(final_model, plotit = FALSE)[1:5,]
+
+plot2 = ggplot(temp, aes(x = var, y = rel.inf)) + geom_bar(stat = "identity")+ coord_flip() + ggtitle("Top 5 important factors") + xlab("Importance") + ylab("Factors") 
+plot2
+```
+
+This bar graph shows the top 5 crucial features by using the GBM model. GBM model gives us the importance of each feature by the number of splitting and the weight of each tree. The most important feature is yard-gained. It clearly makes sense because the high measure of yard-gained means an attacking team is closed to the end zone, and it will increase WPA, our predictor. It also applies to the other 4 features. Our GBM model clearly shows the important features. 
+
+# Discussion
+
+We had a broad yet clear goal in our mind with this project. We wanted to see if the play-calling of the coaches made analytical sense. After running various statical models onto our cleaned NFL 2018 season play-by-play data, we found that everything in football can't be explained by purely relying on analytics.  We realize such for the following reasons.
+
+Now that we have selected GBM to be our best performing model, our test RMSE for this model is actually better than the validation one which is a surprise but it is only so slightly better. Sadly this model does not have a very good showing at all, with an RMSE of `r final_RMSE` this essentially means that our prediction is give or take `r final_RMSE * 100` percent off compared to the actual WPA. Our ultimate goal was to be able to predict WPA and although our model fell short, we have to take into consideration that we are limiting the data by a very large margin. 
+
+This model is supposed to be applicable during NFL games by head coaches, there are some very valuable information we cut off in order to make a model that can be reasonable used. For example, the reason we took out any defensive features was because whether you are on the receiving end or not, you do not know what kinds of decisions and plays the opposing team will be making restriction the information available even more. Like we have mentioned previously, there is no way for a head coach of the possession team to guess what kind of defense the opposing team will play or rather quarterback is going to be sacked or not. As a coach of a team, a coach will never guess that his/her quarterback will be sacked. There are too many predictor variables that get considered in the game of football.
+
+With much more meaningful information this model can be a very promising for the goal of predicting WPA by a good margin but for the sake of our motivation it is sadly not possible to be able to algorithmically compute WPA given only information made available in real time during the game. The origin of WPA was to measure the impact of the defensive player have on the game.  Statically measuring defensive players is extremely difficult and non-standard tasks. WPA was mainly created to intake the impact of the defensive player on the team's winning chance. However, due to the unpredictable play calling of the defensive team in the game,  we limited ourselves only to the offensive side of the game.
+
+We have proven that yards gained was one of the most influential factors for calculating WPA from our chosen offensive variables. However, there is no way that a coach will know the exact yards gained before the play ends. In the end, our most influential factor is a factor that can't be inputted into the model based on the variables we had.
+
+Finally, every single coach in the NFL gets paid millions to call the best play based on their experience, knowledge of the game and their players, and the identity of their teams. A group of college students wouldn't be able to fully analyze these with our limited knowledge in both statical modeling and the game of football. Some of these coaches have coached a football longer than we have lived or played every professional level of football there is. 
+
+We all that in our mind, a further study utilizing both offensive and defensive statistics of the game will be suggested. In an attempt to analytically breakdown football, we realized that it might be harder than analyze other games such as baseball due to so many unpredictable situations in the game. Having a way to incorporate each and every individual players and their statistics on the field during each play could be added to signicantly to see which combination of players give each team best chance to win. There are much more to NFL games than just states on a sheet of a paper. 
+
+
+# Appendix
+
+## Data Dictionary
+```{r data dictionary, include = FALSE}
+names(nfl_trn)
+```
+
+- `posteam` - The team on offense
+- `defteam` - The team on defense
+- `yardline_100` - Numeric distance in the number of yards from the opponent's endzone for the posteam
+- `game_date` - Date of the game
+- `game_seconds_remaining` -Numeric seconds remaining in the game 
+- `qtr` - Quarter of the game (5 is overtime)
+- `down` - The down for the given play
+- `ydstogo` - Numeric yards in distance from either the first down marker or the endzone in goal down situations
+- `play_type` - Type of play: pass (includes sacks), run (includes scrambles), punt, field_goal, kickoff, extra_point, qb_kneel, qb_spike, no_play (timeouts and penalties), and missing for rows indicating end of play.
+- `shotgun` - Whether or not the play was in shotgun formation
+- `no_huddle` - Whether or not the play was in no_huddle formation
+- `qb_dropback` - Whether or not the QB dropped back on the play (pass attempt, sack, or scrambled)
+- `pass_location` - String indicator for pass location: left, middle, or right
+- `yards_gained` - Yards gained (or lost) for the given play
+- `pass_length` - Pass length: short or deep
+- `air_yards` - Distance in yards perpendicular to the line of scrimmage at where the targeted receiver either caught or didn't catch the ball
+- `yards_after_catch` - Distance in yards perpendicular to the yard line where the receiver made the reception to where the play ended
+- `run_location` - Location of run: left, middle, or right
+- `run_gap` - Line gap of run: end, guard, or tackle
+- `field_goal_result` - Result of field goal attempt: made, missed, or blocked
+- `kick_distance` - Distance in yards for kickoffs, field goals, and punts
+- `posteam_timeouts_remaining` - Number of timeouts remaining for the possession team
+- `defteam_timeouts_remaining` - Number of timeouts remaining for the team on defense
+- `wpa` - The win probability added with respect to the possession team
+
+[^1]: [Kaggle: Detailed NFL Play-by-Play Data 2009-2018](https://www.kaggle.com/maxhorowitz/nflplaybyplay2009to2016)
+
+[^2]: [GitHub: 'nflscrapR-data'](https://github.com/ryurko/nflscrapR-data)
+
+[^3]: [Carnegie Mellon University: Statistics & Data Science](http://www.stat.cmu.edu)
+
+[^4]: [GitHub: nflscrapR](https://github.com/maksimhorowitz/nflscrapR)
+
+[^5]: [NFL: Official Website](https://www.nfl.com)
+
+[^6]: [GitHub: nflscrapR-models](https://github.com/ryurko/nflscrapR-models)
+
+

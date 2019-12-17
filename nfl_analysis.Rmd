@@ -105,10 +105,6 @@ library(kableExtra)
 ```{r data loading, message = FALSE, warning=FALSE, echo = TRUE}
 df_2018_first = read_csv("NFL_2018_first.csv") #first half data only
 df_2018_second = read_csv("NFL_2018_second.csv") #second half data only
-
-#df_2018_first = read_csv("C:/Users/jekim3/Desktop/NFL_2018_first.csv")
-#df_2018_second = read_csv("C:/Users/jekim3/Desktop/NFL_2018_second.csv")
-
 df_2018 = rbind(df_2018_first, df_2018_second) #combining them both
 ```
 
@@ -272,7 +268,7 @@ GBM model gives us a trainning rmse of `r gbm_RMSE` this value was the best one 
 
 # Results
 
-```{r result table, echo = FALSE}
+```{r result table, include = FALSE, echo = FALSE}
 trainning_results = tibble(
   Models = c("Linear", "Ridge", "Lasso", "GBM"),
   "Validation RMSE" = c(linear_rmse, ridge_model_RMSE, lasso_rmse, gbm_RMSE )) %>%
@@ -284,7 +280,7 @@ trainning_results
 
 Looking at our train data results, we can see that the Gradient Boosting model has the least and 'best' RMSE value of the five models. However, it is the best by a very small margin, the fact that the Linear Model has an RMSE with 0.001 margin to the best model does not look promising at all. The results for ridge and lasso regression make sense as well because those kinds of model aim to reduce model complexity by either penalizing features (Ridge) or turning them close to or being zero (Lasso). However, even when these models are optimized to reduce complexity just like our stepwise function did it only came to a value also quite close to the lowest RMSE value that the GBM model accomplished. The shortcomings that we hoped Lasso and Ridge would pick up from, the Gradient Boosted model somehow managed to do with a slightly better performance. Through the use of multiple weak tree models the gradient boosted model is made to reduce RMSE so this model performing the best is not too much of a surprise, in fact many winning models on Kaggle's data science contests are through the use of GBM. 
 
-```{r test rmse, cache = TRUE, include = FALSE}
+```{r test rmse, include = FALSE}
 # Omitting random NAs in the data
 nfl_trn = na.omit(nfl_trn)
 nfl_tst = na.omit(nfl_tst)
@@ -314,7 +310,7 @@ final_pred = predict(final_model, tst_x)
 final_RMSE = calc_rmse(tst_y, final_pred)
 ```
 
-```{r final test rmse table, echo = FALSE}
+```{r final test rmse table, include= FALSE, echo = FALSE}
 final_results = tibble(
   Models = c("GBM with cross-validation"),
   "Test RMSE" = c(final_RMSE)) %>%
@@ -324,7 +320,7 @@ final_results = tibble(
 final_results
 ```
 
-```{r visual1, cache = TRUE, echo = FALSE}
+```{r visual1, warning = FALSE, echo = FALSE}
 final_compare = as.data.frame(cbind(final_pred, tst_y))
 
 plot1 = ggplot(final_compare, aes(x = tst_y, y = final_pred)) + geom_point(shape = 5, color = "black") + geom_abline(slope = 1, col = "red") + ggtitle("GBM Actual vs Prediction") + xlab("Actual") + ylab("Prediction") +
@@ -334,7 +330,7 @@ plot1
 
 This graph shows us a dot plot with actual data and prediction data with y = x line. The line shows us what our y-axis should be. Our prediction spread through y=x, and even though there is some variance, we predicted the data pretty well.
 
-```{r visual2, cache = TRUE, echo = FALSE}
+```{r visual2, echo = FALSE}
 temp = summary(final_model, plotit = FALSE)[1:5,]
 
 plot2 = ggplot(temp, aes(x = var, y = rel.inf)) + geom_bar(stat = "identity")+ coord_flip() + ggtitle("Top 5 important factors") + xlab("Importance") + ylab("Factors") 
@@ -357,8 +353,7 @@ We have proven that yards gained was one of the most influential factors for WPA
 
 Finally, every single coach in the NFL gets paid millions to call the best play based on their experience, knowledge of the game and their players, and the identity of their teams. A group of college students wouldn't be able to fully analyze these with our limited knowledge in both statical modeling and the game of football. Some of these coaches have coached a football longer than we have lived or played every professional level of football there is. 
 
-We all that in our mind, a further study utilizing both offensive and defensive statistics of the game will be suggested. In an attempt to analytically breakdown football, we realized that it might be harder than analyze other games such as baseball due to so many unpredictable situations in the game. Having a relying way to incorporate each and every individual players on the field during each play could be added to signicantly to see which combination of players give each team best chance to win. 
-
+We all that in our mind, a further study utilizing both offensive and defensive statistics of the game will be suggested. In an attempt to analytically breakdown football, we realized that it might be harder than analyze other games such as baseball due to so many unpredictable situations in the game. Having a relying way to incorporate each and every individual players on the field during each play could be added to signicantly to see which combination of players give each team best chance to win. This study proves that stats on paper isn't everything for NFL games. You can't simply rely on analytics to play game of sports. 
 
 # Appendix
 
