@@ -106,8 +106,8 @@ library(kableExtra)
 df_2018_first = read_csv("NFL_2018_first.csv") #first half data only
 df_2018_second = read_csv("NFL_2018_second.csv") #second half data only
 
-#df_2018_first = read_csv("C:/Users/jekim3.UOFI.000.001.002/Desktop/NFL_2018_first.csv")
-#df_2018_second = read_csv("C:/Users/jekim3.UOFI.000.001.002/Desktop/NFL_2018_second.csv")
+#df_2018_first = read_csv("C:/Users/jekim3/Desktop/NFL_2018_first.csv")
+#df_2018_second = read_csv("C:/Users/jekim3/Desktop/NFL_2018_second.csv")
 
 df_2018 = rbind(df_2018_first, df_2018_second) #combining them both
 ```
@@ -326,37 +326,39 @@ final_results
 
 ```{r visual1, cache = TRUE, echo = FALSE}
 final_compare = as.data.frame(cbind(final_pred, tst_y))
-plot1 = ggplot(final_compare, aes(x = tst_y, y = final_pred)) + geom_point(shape = 5, color = "black") + geom_abline(slope = 1, col = "red") + ggtitle("GBM Actual vs Prediction") + xlab("Actual") + ylab("Prediction")
+
+plot1 = ggplot(final_compare, aes(x = tst_y, y = final_pred)) + geom_point(shape = 5, color = "black") + geom_abline(slope = 1, col = "red") + ggtitle("GBM Actual vs Prediction") + xlab("Actual") + ylab("Prediction") +
+   xlim(-0.5, 0.5) + ylim(-0.2 ,0.2)
 plot1
 ```
 
 This graph shows us a dot plot with actual data and prediction data with y = x line. The line shows us what our y-axis should be. Our prediction spread through y=x, and even though there is some variance, we predicted the data pretty well.
 
-
 ```{r visual2, cache = TRUE, echo = FALSE}
 temp = summary(final_model, plotit = FALSE)[1:5,]
+
 plot2 = ggplot(temp, aes(x = var, y = rel.inf)) + geom_bar(stat = "identity")+ coord_flip() + ggtitle("Top 5 important factors") + xlab("Importance") + ylab("Factors") 
 plot2
 ```
 
 This bar graph shows the top 5 crucial features by using the GBM model. GBM model gives us the importance of each feature by the number of splitting and the weight of each tree. The most important feature is yard-gained. It clearly makes sense because the high measure of yard-gained means an attacking team is closed to the end zone, and it will increase WPA, our predictor. It also applies to the other 4 features. Our GBM model clearly shows the important features. 
 
-
 # Discussion
-
-Now that we have selected GBM to be our best performing model, our test RMSE for this model is actually better than the validation one which is a surprise but it is only so slightly better. Sadly this model does not have a very good showing at all, with an RMSE of `r final_RMSE` this essentially means that our prediction is give or take `r final_RMSE * 100` percent off compared to the actual WPA. Our ultimate goal was to be able to predict WPA and although our model fell short, we have to take into consideration that we are limiting the data by a very large margin. This model is supposed to be applicable during NFL games by head coaches, there are some very valuable information we cut off in order to make a model that can be reasonable used. For example, the reason we took out any defensive features was because whether you are on the receiving end or not, you do not know what kinds of decisions and plays the opposing team will be making restriction the information available even more. With much more meaningful information this model can be a very promising for the goal of predicting WPA by a good margin but for the sake of our motivation it is sadly not possible to be able to algorithmically compute WPA given only information made available in real time during the game. 
 
 We had a broad yet clear goal in our mind with this project. We wanted to see if the play-calling of the coaches made analytical sense. After running various statical models onto our cleaned NFL 2018 season play-by-play data, we found that everything in football can't be explained by purely relying on analytics.  We realize such for the following reasons.
 
-Analytically, we were only limited to only a few offensive game measures. Like we have mentioned previously, there is no way for a head coach of the possession team to guess what kind of defense the opposing team will play or rather quarterback is going to be sacked or not. As a coach of a team, a coach will never guess that his/her quarterback will be sacked. There are too many predictor variables that get considered in the game of football.  
+Now that we have selected GBM to be our best performing model, our test RMSE for this model is actually better than the validation one which is a surprise but it is only so slightly better. Sadly this model does not have a very good showing at all, with an RMSE of `r final_RMSE` this essentially means that our prediction is give or take `r final_RMSE * 100` percent off compared to the actual WPA. Our ultimate goal was to be able to predict WPA and although our model fell short, we have to take into consideration that we are limiting the data by a very large margin. 
 
-The origin of WPA was to measure the impact of the defensive player have on the game.  Statically measuring defensive players is extremely difficult and non-standard tasks. WPA was mainly created to intake the impact of the defensive player on the team's winning chance. However, due to the unpredictable play calling of the defensive team in the game,  we limited ourselves only to the offensive side of the game.
+This model is supposed to be applicable during NFL games by head coaches, there are some very valuable information we cut off in order to make a model that can be reasonable used. For example, the reason we took out any defensive features was because whether you are on the receiving end or not, you do not know what kinds of decisions and plays the opposing team will be making restriction the information available even more. Like we have mentioned previously, there is no way for a head coach of the possession team to guess what kind of defense the opposing team will play or rather quarterback is going to be sacked or not. As a coach of a team, a coach will never guess that his/her quarterback will be sacked. There are too many predictor variables that get considered in the game of football.
+
+With much more meaningful information this model can be a very promising for the goal of predicting WPA by a good margin but for the sake of our motivation it is sadly not possible to be able to algorithmically compute WPA given only information made available in real time during the game. The origin of WPA was to measure the impact of the defensive player have on the game.  Statically measuring defensive players is extremely difficult and non-standard tasks. WPA was mainly created to intake the impact of the defensive player on the team's winning chance. However, due to the unpredictable play calling of the defensive team in the game,  we limited ourselves only to the offensive side of the game.
 
 We have proven that yards gained was one of the most influential factors for WPA from our chosen offensive variables. However, there is no way that a coach will know the exact yards gained before the play ends. In the end, our most influential factor is a factor that can't be inputted into the model based on the variables we had.
 
 Finally, every single coach in the NFL gets paid millions to call the best play based on their experience, knowledge of the game and their players, and the identity of their teams. A group of college students wouldn't be able to fully analyze these with our limited knowledge in both statical modeling and the game of football. Some of these coaches have coached a football longer than we have lived or played every professional level of football there is. 
 
 We all that in our mind, a further study utilizing both offensive and defensive statistics of the game will be suggested. In an attempt to analytically breakdown football, we realized that it might be harder than analyze other games such as baseball due to so many unpredictable situations in the game. Having a relying way to incorporate each and every individual players on the field during each play could be added to signicantly to see which combination of players give each team best chance to win. 
+
 
 # Appendix
 
