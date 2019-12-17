@@ -330,11 +330,17 @@ plot1 = ggplot(final_compare, aes(x = tst_y, y = final_pred)) + geom_point(shape
 plot1
 ```
 
+This graph shows us a dot plot with actual data and prediction data with y = x line. The line shows us what our y-axis should be. Our prediction spread through y=x, and even though there is some variance, we predicted the data pretty well.
+
+
 ```{r visual2, cache = TRUE, echo = FALSE}
 temp = summary(final_model, plotit = FALSE)[1:5,]
 plot2 = ggplot(temp, aes(x = var, y = rel.inf)) + geom_bar(stat = "identity")+ coord_flip() + ggtitle("Top 5 important factors") + xlab("Importance") + ylab("Factors") 
 plot2
 ```
+
+This bar graph shows the top 5 crucial features by using the GBM model. GBM model gives us the importance of each feature by the number of splitting and the weight of each tree. The most important feature is yard-gained. It clearly makes sense because the high measure of yard-gained means an attacking team is closed to the end zone, and it will increase WPA, our predictor. It also applies to the other 4 features. Our GBM model clearly shows the important features. 
+
 
 # Discussion
 
