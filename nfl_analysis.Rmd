@@ -187,16 +187,11 @@ calc_rmse = function(actual, predicted){
 }
 ```
 
-<<<<<<< HEAD
-```{r linear modeling and stepwise, cache= TRUE}
-nfl_trn = na.omit(nfl_trn)
-nfl_tst = na.omit(nfl_tst)
-=======
+
 ```{r linear modeling and stepwise, results = 'hide', message=FALSE, warning=FALSE, cache= TRUE}
 nfl_trn = na.omit(nfl_trn)
 nfl_tst = na.omit(nfl_tst)
 
->>>>>>> a3fc259897a1bc28527bec0366257c3603798f0a
 nfl_lm = lm(wpa ~., data = nfl_trn)
 lm_pred = predict(nfl_lm, nfl_trn)
 linear_rmse = calc_rmse(actual = nfl_trn$wpa, predicted = lm_pred)
@@ -210,7 +205,7 @@ nfl_step$results
 nfl_step$bestTune
 ```
 
-Linear model gives us a training rmse of 0.03739534, the cross validated step function where we are tuning for the best number of parameters is using all 24 features which gives us an CV rmse of 0.04274302, this was using 10 folds. Since all features gives us the best cv rmse, the full model is no different than the cv one. 
+Linear model gives us a training rmse of `r linear_rmse`, the cross validated step function where we are tuning for the best number of parameters is using all 24 features which gives us an CV rmse of 0.04274302, this was using 10 folds. Since all features gives us the best cv rmse, the full model is no different than the cv one. 
 
 ```{r lasso model, cache= TRUE}
 # Omitting random NAs in the data
@@ -238,7 +233,7 @@ lasso_pred = predict(lasso_mod, val_x)
 lasso_rmse = calc_rmse(val_y, lasso_pred)
 ```
 
-LASSO model gives us a trainning rmse of 0.03913281, the cross validated using deafult option. 
+LASSO model gives us a trainning rmse of `lasso_rmse`, the cross validated using deafult option. 
 
 ```{r ridge modeling, cache = TRUE}
 set.seed(42)
@@ -256,7 +251,7 @@ ridge_pred = as.vector(ridge_pred)
 ridge_model_RMSE = calc_rmse(val_y, ridge_pred)
 ```
 
-Ridge model gives us a trainning rmse of 0.03931021, the cross-validation of 10 folds were used. 
+Ridge model gives us a trainning rmse of `r ridge_model_RMSE`, the cross-validation of 10 folds were used. 
 
 ```{r, GBM modeling, cache = TRUE}
 #Use cross validation with 5folds
@@ -272,7 +267,7 @@ gbm_pred = predict(gbm_model, val_x)
 gbm_RMSE = calc_rmse(val_y, gbm_pred)
 ```
 
-GBM model gives us a trainning rmse of 0.03569928. GBM trainning RMSE was the best RMSE from our model, so we will advance our study further using this model. 
+GBM model gives us a trainning rmse of `r gbm_RMSE` . This value was the best RMSE from the rest of the models, so we will advance our study further using this model. 
 
 ***
 
@@ -318,7 +313,25 @@ final_pred = predict(final_model, tst_x)
 final_RMSE = calc_rmse(tst_y, final_pred)
 ```
 
+Looking at our train data results, we can see that the Gradient Boosting model has the least and 'best' RMSE value of the five models. However, it is the best by a very small margin, the fact that the Linear Model has an RMSE with 0.001 margin to the best model does not look promising at all. The results for ridge and lasso regression make sense as well because those kinds of model aim to reduce model complexity by either penalizing features (Ridge) or turning them close to or being zero (Lasso). However, even when these models are optimized to reduce complexity just like our stepwise function did it only came to a value also quite close to the lowest RMSE value that the GBM model accomplished. The shortcomings that we hoped Lasso and Ridge would pick up from, the Gradient Boosted model somehow managed to do with a slightly better performance. Through the use of multiple weak tree models the gradient boosted model is made to reduce RMSE so this model performing the best is not too much of a surprise, in fact many winning models on Kaggle's data science contests are through the use of GBM. 
+
+***
+
+# Discussion
+
+
 ```{r final test rmse table, echo = FALSE}
+# Best model
+set.seed(42)
+final_model = train(trn_x, trn_y,
+                  method = "gbm", 
+                  metric = "RMSE",
+                  trControl = cv, verbose = FALSE)
+
+final_pred = predict(final_model, tst_x)
+final_RMSE = calc_rmse(tst_y, final_pred)
+
+
 final_results = tibble(
   Models = c("GBM with cross-validation"),
   "Test RMSE" = c(final_RMSE)) %>%
@@ -328,7 +341,10 @@ final_results = tibble(
 final_results
 ```
 
-# Discussion
+
+Now that we have selected GBM to be our best performing model, our test RMSE for this model is actually better than the validation one which is a surprise but it is only so slightly better. Sadly this model does not have a very good showing at all, with an RMSE of `r final_RMSE` this essentially means that our prediction is give or take `r final_RMSE * 100` percent off compared to the actual WPA. Our ultimate goal was to be able to predict WPA and although our model fell short, we have to take into consideration that we are limiting the data by a very large margin. This model is supposed to be applicable during NFL games by head coaches, there are some very valuable information we cut off in order to make a model that can be reasonable used. For example, the reason we took out any defensive features was because whether you are on the receiving end or not, you do not know what kinds of decisions and plays the opposing team will be making restriction the information available even more. With much more meaningful information this model can be a very promising for the goal of predicting WPA by a good margin but for the sake of our motivation it is sadly not possible to be able to algorithmically compute WPA given only information made available in real time during the game. 
+
+***
 
 # Appendix
 
